@@ -15,9 +15,32 @@
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Today's Date Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XCq-vR-Ysj">
+                                <rect key="frame" x="216" y="246" width="168" height="23"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="19"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Current Time Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u9O-kr-63i">
+                                <rect key="frame" x="221" y="289" width="159" height="22"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="u9O-kr-63i" firstAttribute="top" secondItem="XCq-vR-Ysj" secondAttribute="bottom" constant="20" id="FHr-bN-JMp"/>
+                            <constraint firstAttribute="centerX" secondItem="u9O-kr-63i" secondAttribute="centerX" id="IaA-Tc-MNT"/>
+                            <constraint firstAttribute="centerY" secondItem="u9O-kr-63i" secondAttribute="centerY" id="aDf-wc-MkW"/>
+                            <constraint firstAttribute="centerX" secondItem="XCq-vR-Ysj" secondAttribute="centerX" id="xuh-gx-kdS"/>
+                        </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Home" id="kWd-MZ-Uee" userLabel="Home"/>
+                    <connections>
+                        <outlet property="currentTimeLabel" destination="u9O-kr-63i" id="TFc-EX-gxx"/>
+                        <outlet property="todaysDateLabel" destination="XCq-vR-Ysj" id="oab-gl-iaN"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
@@ -34,7 +57,44 @@
                     <view key="view" contentMode="scaleToFill" id="jdN-lf-3sb">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4Zp-KJ-bir">
+                                <rect key="frame" x="238" y="285" width="125" height="30"/>
+                                <state key="normal" title="Simulate Entrance">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="simulateEntranceButton:" destination="LuO-V5-mL7" eventType="touchUpInside" id="r4H-qP-ofB"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FFn-xU-tEg">
+                                <rect key="frame" x="255" y="335" width="90" height="30"/>
+                                <state key="normal" title="Simulate Exit">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="simulateExitButton:" destination="LuO-V5-mL7" eventType="touchUpInside" id="aAu-x5-w6a"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uof-bn-b7E">
+                                <rect key="frame" x="252" y="385" width="96" height="30"/>
+                                <state key="normal" title="Simulate save">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="simulateSaveButton:" destination="LuO-V5-mL7" eventType="touchUpInside" id="jfA-tJ-kLZ"/>
+                                </connections>
+                            </button>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="centerY" secondItem="4Zp-KJ-bir" secondAttribute="centerY" id="GHe-CG-K6w"/>
+                            <constraint firstItem="uof-bn-b7E" firstAttribute="top" secondItem="FFn-xU-tEg" secondAttribute="bottom" constant="20" id="JTK-BW-iKx"/>
+                            <constraint firstAttribute="centerX" secondItem="4Zp-KJ-bir" secondAttribute="centerX" id="RIu-1y-dGu"/>
+                            <constraint firstAttribute="centerX" secondItem="FFn-xU-tEg" secondAttribute="centerX" id="Zeh-1Q-0IE"/>
+                            <constraint firstItem="FFn-xU-tEg" firstAttribute="top" secondItem="4Zp-KJ-bir" secondAttribute="bottom" constant="20" id="fdg-kB-N18"/>
+                            <constraint firstAttribute="centerX" secondItem="uof-bn-b7E" secondAttribute="centerX" id="mIs-G0-qD8"/>
+                        </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Detail" id="kjH-Ek-Ldp" userLabel="Detail"/>
                 </viewController>

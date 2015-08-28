@@ -8,15 +8,74 @@
 
 #import "AppDelegate.h"
 
-@interface AppDelegate ()
+// import estimote SDK
+#import <EstimoteSDK/EstimoteSDK.h>
+
+// import my headers
+#import "WorkTimeManager.h"
+
+@interface AppDelegate () <ESTBeaconManagerDelegate>
+
+//// directory of this app's Document
+//@property (nonatomic, strong) NSString *currentDirectory;
+
+// add property to hold the beacon manager
+@property (nonatomic) ESTBeaconManager *beaconManager;
+
 
 @end
 
 @implementation AppDelegate
 
 
+#pragma  mark - ESTBeaconManager protocols
+- (void)beaconManager:(id)manager didEnterRegion:(CLBeaconRegion *)region {
+    // show notification to user
+    UILocalNotification *notification = [UILocalNotification new];
+    notification.alertBody = @"You've entered the gate!!";
+    [[UIApplication sharedApplication] presentLocalNotificationNow:notification];
+    
+    // save current status
+    WorkTimeManager *workManager = [WorkTimeManager defaultInstance];
+    [workManager addEntranceTime:[NSDate date]];
+}
+
+- (void)beaconManager:(id)manager didExitRegion:(CLBeaconRegion *)region {
+    UILocalNotification *notification = [UILocalNotification new];
+    notification.alertBody = @"You're leaving the gate!!";
+    [[UIApplication sharedApplication] presentLocalNotificationNow:notification];
+    
+    // save current status
+    WorkTimeManager *workManager = [WorkTimeManager defaultInstance];
+    [workManager addExitTime:[NSDate date]];
+}
+
+#pragma mark - AppDelegate protocols
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    
+    // set EST beacon manager
+    _beaconManager = [ESTBeaconManager new];
+    _beaconManager.delegate = self;
+    
+    // request aurthorization
+    [_beaconManager requestAlwaysAuthorization];    // authorization granted even if the app is not running
+    
+    // set beacon id for region monitoring
+    NSUUID *uuid = [[NSUUID alloc] initWithUUIDString:@"B9407F30-F5F8-466E-AFF9-25556B57FE6D"];
+    CLBeaconMajorValue majorVal = 100;
+    CLBeaconMinorValue minorVal = 111;
+    CLBeaconRegion *beaconRegion = [[CLBeaconRegion alloc] initWithProximityUUID:uuid major:majorVal minor:minorVal identifier:@"work gate region"];
+    [_beaconManager startMonitoringForRegion:beaconRegion];
+    
+    // register notification
+    [[UIApplication sharedApplication] registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert categories:nil]];
+    
+    
+    // create WorkTimeManager
+    WorkTimeManager *workManager = [WorkTimeManager defaultInstance];
+    [workManager createInstance];
+    
     return YES;
 }
 
@@ -40,6 +99,10 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    
+    // backup
+    WorkTimeManager *workManager = [WorkTimeManager defaultInstance];
+    [workManager saveAsFile];
 }
 
 @end

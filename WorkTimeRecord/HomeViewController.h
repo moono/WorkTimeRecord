@@ -9,5 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface HomeViewController : UIViewController
+@property (weak, nonatomic) IBOutlet UILabel *todaysDateLabel;
+@property (weak, nonatomic) IBOutlet UILabel *currentTimeLabel;
 
 @end

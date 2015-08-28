@@ -8,6 +8,10 @@
 
 #import "DetailViewController.h"
 
+// my import
+#import "WorkTimeManager.h"
+
+
 @interface DetailViewController ()
 
 @end
@@ -34,4 +38,20 @@
 }
 */
 
+#pragma mark - simulation methods
+- (IBAction)simulateEntranceButton:(id)sender {
+    WorkTimeManager *manager = [WorkTimeManager defaultInstance];
+    [manager addEntranceTime:[NSDate date]];
+}
+
+- (IBAction)simulateExitButton:(id)sender {
+    WorkTimeManager *manager = [WorkTimeManager defaultInstance];
+    [manager addExitTime:[NSDate date]];
+}
+
+- (IBAction)simulateSaveButton:(id)sender {
+    WorkTimeManager *manager = [WorkTimeManager defaultInstance];
+    NSArray *filtered = [manager getTodaysList:[NSDate date]];
+    NSLog(@"%@", filtered);
+}
 @end

@@ -10,4 +10,7 @@
 
 @interface DetailViewController : UIViewController
 
+- (IBAction)simulateEntranceButton:(id)sender;
+- (IBAction)simulateExitButton:(id)sender;
+- (IBAction)simulateSaveButton:(id)sender;
 @end

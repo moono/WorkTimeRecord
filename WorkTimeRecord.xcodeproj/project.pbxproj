@@ -15,6 +15,8 @@
 		2A33B8AB1B84438B00F2BD25 /* WorkTimeRecordTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A33B8AA1B84438B00F2BD25 /* WorkTimeRecordTests.m */; };
 		2A33B8B61B8443FB00F2BD25 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A33B8B51B8443FB00F2BD25 /* HomeViewController.m */; };
 		2A33B8B91B84441700F2BD25 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A33B8B81B84441700F2BD25 /* DetailViewController.m */; };
+		2A33B8BC1B8453CD00F2BD25 /* WorkTimeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A33B8BB1B8453CD00F2BD25 /* WorkTimeManager.m */; };
+		2AFA08B41B85A8D0003F8116 /* EstimoteSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2AFA08B31B85A8D0003F8116 /* EstimoteSDK.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,6 +45,9 @@
 		2A33B8B51B8443FB00F2BD25 /* HomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
 		2A33B8B71B84441700F2BD25 /* DetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
 		2A33B8B81B84441700F2BD25 /* DetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailViewController.m; sourceTree = "<group>"; };
+		2A33B8BA1B8453CD00F2BD25 /* WorkTimeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WorkTimeManager.h; sourceTree = "<group>"; };
+		2A33B8BB1B8453CD00F2BD25 /* WorkTimeManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WorkTimeManager.m; sourceTree = "<group>"; };
+		2AFA08B31B85A8D0003F8116 /* EstimoteSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = EstimoteSDK.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -50,6 +55,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2AFA08B41B85A8D0003F8116 /* EstimoteSDK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -69,6 +75,7 @@
 				2A33B88D1B84438B00F2BD25 /* WorkTimeRecord */,
 				2A33B8A71B84438B00F2BD25 /* WorkTimeRecordTests */,
 				2A33B88C1B84438B00F2BD25 /* Products */,
+				2AFA08B31B85A8D0003F8116 /* EstimoteSDK.framework */,
 			);
 			sourceTree = "<group>";
 		};
@@ -94,6 +101,8 @@
 				2A33B8B51B8443FB00F2BD25 /* HomeViewController.m */,
 				2A33B8B71B84441700F2BD25 /* DetailViewController.h */,
 				2A33B8B81B84441700F2BD25 /* DetailViewController.m */,
+				2A33B8BA1B8453CD00F2BD25 /* WorkTimeManager.h */,
+				2A33B8BB1B8453CD00F2BD25 /* WorkTimeManager.m */,
 			);
 			path = WorkTimeRecord;
 			sourceTree = "<group>";
@@ -227,6 +236,7 @@
 				2A33B8941B84438B00F2BD25 /* AppDelegate.m in Sources */,
 				2A33B8911B84438B00F2BD25 /* main.m in Sources */,
 				2A33B8B61B8443FB00F2BD25 /* HomeViewController.m in Sources */,
+				2A33B8BC1B8453CD00F2BD25 /* WorkTimeManager.m in Sources */,
 				2A33B8B91B84441700F2BD25 /* DetailViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -355,6 +365,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = WorkTimeRecord/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -365,6 +379,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = WorkTimeRecord/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -424,6 +442,7 @@
 				2A33B8B01B84438B00F2BD25 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		2A33B8B11B84438B00F2BD25 /* Build configuration list for PBXNativeTarget "WorkTimeRecordTests" */ = {
 			isa = XCConfigurationList;
@@ -432,6 +451,7 @@
 				2A33B8B31B84438B00F2BD25 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
