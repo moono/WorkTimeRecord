@@ -10,9 +10,17 @@
 
 @interface WorkTimeManager : NSObject
 
+#pragma mark - properties
+// flag to indicate whether the user is inside the building or not
+@property (nonatomic) BOOL isInsideBuilding;
+
+
+#pragma mark - class methods
+// returns singleton
 + (WorkTimeManager *)defaultInstance;
 
-// methods
+
+#pragma mark - instance methods
 
 // enter & exit setter
 - (void)addEntranceTime:(NSDate *)entranceTime;

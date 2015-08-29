@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="Imh-o1-9mQ">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
         <!--Home View Controller-->
@@ -16,24 +17,56 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Today's Date Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XCq-vR-Ysj">
-                                <rect key="frame" x="216" y="246" width="168" height="23"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="19"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ljA-4g-21v" userLabel="Date view">
+                                <rect key="frame" x="0.0" y="50" width="300" height="30"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Today's Date Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XCq-vR-Ysj">
+                                        <rect key="frame" x="66" y="3" width="168" height="23"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="19"/>
+                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="XCq-vR-Ysj" firstAttribute="centerX" secondItem="ljA-4g-21v" secondAttribute="centerX" id="99i-Ma-moC"/>
+                                    <constraint firstAttribute="height" constant="30" id="9CS-wB-zWA"/>
+                                    <constraint firstItem="XCq-vR-Ysj" firstAttribute="centerY" secondItem="ljA-4g-21v" secondAttribute="centerY" id="XM1-xn-uRV"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XBY-5m-PWO" userLabel="Time view">
+                                <rect key="frame" x="300" y="50" width="300" height="30"/>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Current Time Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u9O-kr-63i">
-                                <rect key="frame" x="221" y="289" width="159" height="22"/>
+                                <rect key="frame" x="371" y="55" width="159" height="22"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="9dL-5b-mOR" userLabel="Today's list table view">
+                                <rect key="frame" x="0.0" y="95" width="600" height="455"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="BYZ-38-t0r" id="uou-BH-hSW"/>
+                                    <outlet property="delegate" destination="BYZ-38-t0r" id="fL0-mc-ZZZ"/>
+                                </connections>
+                            </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="u9O-kr-63i" firstAttribute="top" secondItem="XCq-vR-Ysj" secondAttribute="bottom" constant="20" id="FHr-bN-JMp"/>
-                            <constraint firstAttribute="centerX" secondItem="u9O-kr-63i" secondAttribute="centerX" id="IaA-Tc-MNT"/>
-                            <constraint firstAttribute="centerY" secondItem="u9O-kr-63i" secondAttribute="centerY" id="aDf-wc-MkW"/>
-                            <constraint firstAttribute="centerX" secondItem="XCq-vR-Ysj" secondAttribute="centerX" id="xuh-gx-kdS"/>
+                            <constraint firstItem="u9O-kr-63i" firstAttribute="centerX" secondItem="XBY-5m-PWO" secondAttribute="centerX" id="0I3-cE-kcb"/>
+                            <constraint firstItem="ljA-4g-21v" firstAttribute="top" secondItem="XBY-5m-PWO" secondAttribute="top" id="5oo-WN-8mf"/>
+                            <constraint firstAttribute="bottom" secondItem="9dL-5b-mOR" secondAttribute="bottom" constant="50" id="Aub-TV-Yxe"/>
+                            <constraint firstItem="ljA-4g-21v" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="Cj1-Ki-Yvo"/>
+                            <constraint firstAttribute="width" secondItem="9dL-5b-mOR" secondAttribute="width" id="Cnt-vg-gEW"/>
+                            <constraint firstItem="ljA-4g-21v" firstAttribute="height" secondItem="XBY-5m-PWO" secondAttribute="height" id="FS9-wb-8xA"/>
+                            <constraint firstItem="u9O-kr-63i" firstAttribute="centerY" secondItem="XBY-5m-PWO" secondAttribute="centerY" id="Myc-6X-ENH"/>
+                            <constraint firstItem="ljA-4g-21v" firstAttribute="width" secondItem="XBY-5m-PWO" secondAttribute="width" id="RtB-Ke-hC3"/>
+                            <constraint firstAttribute="trailing" secondItem="XBY-5m-PWO" secondAttribute="trailing" id="SfY-dv-pwP"/>
+                            <constraint firstItem="9dL-5b-mOR" firstAttribute="top" secondItem="ljA-4g-21v" secondAttribute="bottom" constant="15" id="XfH-ao-U3u"/>
+                            <constraint firstAttribute="width" secondItem="ljA-4g-21v" secondAttribute="width" multiplier="2" id="ZUe-UK-WVU"/>
+                            <constraint firstItem="ljA-4g-21v" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" constant="50" id="bDI-75-Wnw"/>
+                            <constraint firstAttribute="centerX" secondItem="9dL-5b-mOR" secondAttribute="centerX" id="hxr-gg-ubX"/>
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Home" id="kWd-MZ-Uee" userLabel="Home"/>

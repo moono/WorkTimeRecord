@@ -63,8 +63,8 @@
     
     // set beacon id for region monitoring
     NSUUID *uuid = [[NSUUID alloc] initWithUUIDString:@"B9407F30-F5F8-466E-AFF9-25556B57FE6D"];
-    CLBeaconMajorValue majorVal = 100;
-    CLBeaconMinorValue minorVal = 111;
+    CLBeaconMajorValue majorVal = 300;
+    CLBeaconMinorValue minorVal = 444;
     CLBeaconRegion *beaconRegion = [[CLBeaconRegion alloc] initWithProximityUUID:uuid major:majorVal minor:minorVal identifier:@"work gate region"];
     [_beaconManager startMonitoringForRegion:beaconRegion];
     

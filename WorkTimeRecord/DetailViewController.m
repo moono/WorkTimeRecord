@@ -52,6 +52,6 @@
 - (IBAction)simulateSaveButton:(id)sender {
     WorkTimeManager *manager = [WorkTimeManager defaultInstance];
     NSArray *filtered = [manager getTodaysList:[NSDate date]];
-    NSLog(@"%@", filtered);
+    NSLog(@"Today's list: %@", filtered);
 }
 @end

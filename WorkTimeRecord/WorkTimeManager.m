@@ -9,18 +9,18 @@
 #import "WorkTimeManager.h"
 
 // define the keys for dictionary
-#define kTime @"time"
-#define kInOut @"inout"
+#define kIn @"in"				// NSString from NSDate
+#define kOut @"out"				// NSString from NSDate
+#define kDuration @"duration"	// integer
 
-#define kIndex @"index"
-#define kIn @"in"
-#define kOut @"out"
-#define kDuration @"duration"
+//#define kTime @"time"
+//#define kInOut @"inout"
+//#define kIndex @"index"
+
 
 @interface WorkTimeManager ()
 
 // contains all history of the time
-//@property (nonatomic, strong) NSMutableDictionary *history;
 @property (nonatomic, strong) NSMutableArray *history;
 
 // file name to backup the data
@@ -29,6 +29,7 @@
 // for managing time
 @property (nonatomic, strong) NSDateFormatter *dateFormatter;
 
+// stores date(time) of previously entered the monitoring region
 @property (nonatomic, strong) NSDate *lastInDate;
 
 @end
@@ -49,7 +50,10 @@
 
 - (instancetype)init {
     self = [super init];
-    
+	
+	// set initial state
+	_isInsideBuilding = NO;
+	
     // set date formatter
     _dateFormatter = [NSDateFormatter new];
     [_dateFormatter setDateFormat:@"yyyy-MM-dd 'at' HH:mm:ss"];
@@ -64,7 +68,8 @@
     // set last In date
     _lastInDate = nil;
     
-    // load data
+    // load data from file if exists
+	// or create new NSMutableArray instance
     [self loadData];
     
     return self;
@@ -95,8 +100,8 @@
     // save
     [_history addObject:@{kIn : [_dateFormatter stringFromDate:_lastInDate],
                           kOut : [_dateFormatter stringFromDate:exitTime],
-                          kDuration : [NSNumber numberWithDouble:rounded] }];
-    
+                          kDuration : [NSNumber numberWithDouble:rounded]}];
+	
     // set last In time as nil
     _lastInDate = nil;
     
@@ -162,14 +167,15 @@
     
     NSDate *startDate = [calendar dateFromComponents:startComponents];
     NSDate *endDate = [calendar dateFromComponents:endComponents];
+	NSLog(@"Today: %@", today);
     NSLog(@"기준: %@ ~ %@", startDate, endDate);
     
     //NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(in >= %@) AND (in =< %@)", startDate, endDate];
     NSPredicate *predicate = [NSPredicate predicateWithBlock:
                               ^BOOL(id evaluatedObject, NSDictionary *bindings)
     {
-        NSDate *inDate = [_dateFormatter dateFromString:[evaluatedObject valueForKey:kIn]];
-        NSDate *outDate = [_dateFormatter dateFromString:[evaluatedObject valueForKey:kOut]];
+		NSDate *inDate = [_dateFormatter dateFromString:[evaluatedObject valueForKey:kIn]];
+		NSDate *outDate = [_dateFormatter dateFromString:[evaluatedObject valueForKey:kOut]];
         NSLog(@"내부: %@ ~ %@", inDate, outDate);
         return ( (inDate >= startDate) &&  (outDate <= endDate) );
     }];

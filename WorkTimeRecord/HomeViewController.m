@@ -11,7 +11,7 @@
 #import "WorkTimeManager.h"
 
 
-@interface HomeViewController ()
+@interface HomeViewController () <UITableViewDataSource, UITableViewDelegate>
 
 //@property (nonatomic) WorkTimeManager *timeManager;
 @end
@@ -61,6 +61,25 @@
     // tell controller to call this method for every second
     [self performSelector:@selector(checkTime:) withObject:self afterDelay:1.0];
 }
+
+#pragma mark - table view protocols
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+	return 1;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+	static NSString *CellIdentifier = @"Cell";
+	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+	
+	if(cell == nil) {
+		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+	}
+	
+	// customize cell
+	
+	return cell;
+}
+
 
 
 @end
