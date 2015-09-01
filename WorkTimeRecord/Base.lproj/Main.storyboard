@@ -21,7 +21,7 @@
                                 <rect key="frame" x="0.0" y="71" width="300" height="30"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Today's Date Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XCq-vR-Ysj">
-                                        <rect key="frame" x="66" y="3" width="168" height="23"/>
+                                        <rect key="frame" x="66" y="3" width="167.5" height="23"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="19"/>
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
@@ -45,15 +45,18 @@
                             </label>
                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dBG-h2-sCM">
                                 <rect key="frame" x="16" y="30" width="51" height="31"/>
+                                <connections>
+                                    <action selector="switchValueChanged:" destination="BYZ-38-t0r" eventType="valueChanged" id="xWs-wS-3a6"/>
+                                </connections>
                             </switch>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="출근 or 퇴근" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vev-Hg-2VW">
-                                <rect key="frame" x="85" y="30" width="124" height="30"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Inside!!" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vev-Hg-2VW">
+                                <rect key="frame" x="85" y="30" width="83" height="30"/>
                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="25"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="9dL-5b-mOR" userLabel="Today's list table view">
-                                <rect key="frame" x="0.0" y="117" width="600" height="434"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="9dL-5b-mOR" userLabel="Today's list table view">
+                                <rect key="frame" x="0.0" y="116" width="600" height="434"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
                                     <outlet property="dataSource" destination="BYZ-38-t0r" id="uou-BH-hSW"/>
@@ -85,6 +88,8 @@
                     <tabBarItem key="tabBarItem" title="Home" id="kWd-MZ-Uee" userLabel="Home"/>
                     <connections>
                         <outlet property="currentTimeLabel" destination="u9O-kr-63i" id="TFc-EX-gxx"/>
+                        <outlet property="insideSwitch" destination="dBG-h2-sCM" id="o0f-bh-KA6"/>
+                        <outlet property="insideTextLabel" destination="Vev-Hg-2VW" id="oFM-2W-CcV"/>
                         <outlet property="todaysDateLabel" destination="XCq-vR-Ysj" id="oab-gl-iaN"/>
                     </connections>
                 </viewController>

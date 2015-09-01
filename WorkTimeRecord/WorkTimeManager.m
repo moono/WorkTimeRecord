@@ -8,16 +8,6 @@
 
 #import "WorkTimeManager.h"
 
-// define the keys for dictionary
-#define kIn @"in"				// NSString from NSDate
-#define kOut @"out"				// NSString from NSDate
-#define kDuration @"duration"	// integer
-
-//#define kTime @"time"
-//#define kInOut @"inout"
-//#define kIndex @"index"
-
-
 @interface WorkTimeManager ()
 
 // contains all history of the time
@@ -80,31 +70,29 @@
 }
 
 #pragma mark - time management inputs
-- (void)addEntranceTime:(NSDate *)entranceTime {
-    _lastInDate = entranceTime;
-    
-    NSLog(@"%@", _history);
-}
-
-- (void)addExitTime:(NSDate *)exitTime {
-    // check if last In Date exists
-    if (_lastInDate == nil) {
-        NSLog(@"Something Wrong....!!!");
-        return;
-    }
-    
-    // compute time difference between enter & exit
-    double timeInterval = [exitTime timeIntervalSinceDate:_lastInDate];
-    int rounded = (int)round(timeInterval);
-    
-    // save
-    [_history addObject:@{kIn : [_dateFormatter stringFromDate:_lastInDate],
-                          kOut : [_dateFormatter stringFromDate:exitTime],
-                          kDuration : [NSNumber numberWithDouble:rounded]}];
+- (void)addTimeStamp:(NSDate *)time {
+	if (_isInsideBuilding) {
+		_lastInDate = time;
+	}
+	else {
+		if (_lastInDate == nil) {
+			NSLog(@"Something Wrong....!!!");
+			return;
+		}
+		
+		// compute time difference between enter & exit
+		double timeInterval = [time timeIntervalSinceDate:_lastInDate];
+		int rounded = (int)round(timeInterval);
+		
+		// save
+		[_history addObject:@{kIn : [_dateFormatter stringFromDate:_lastInDate],
+							  kOut : [_dateFormatter stringFromDate:time],
+							  kDuration : [NSNumber numberWithDouble:rounded]}];
+		
+		// set last In time as nil
+		_lastInDate = nil;
+	}
 	
-    // set last In time as nil
-    _lastInDate = nil;
-    
     NSLog(@"%@", _history);
 }
 
@@ -181,6 +169,19 @@
     }];
     
     return [_history filteredArrayUsingPredicate:predicate];
+}
+
+- (void)setSwitch:(UISwitch *)mySwitch andLabel:(UILabel *)label {
+	if (_isInsideBuilding) {
+		[mySwitch setOn:YES animated:YES];
+		[label setText:@"Inside!!"];
+	}
+	else {
+		[mySwitch setOn:NO animated:YES];
+		[label setText:@"Outside!!"];
+	}
+	
+	NSLog(@"current inside flag: %@", @(_isInsideBuilding));
 }
 
 @end

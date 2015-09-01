@@ -32,22 +32,19 @@
 - (void)beaconManager:(id)manager didEnterRegion:(CLBeaconRegion *)region {
     // show notification to user
     UILocalNotification *notification = [UILocalNotification new];
-    notification.alertBody = @"You've entered the gate!!";
+    notification.alertBody = @"You're entering the beacon region!!";
     [[UIApplication sharedApplication] presentLocalNotificationNow:notification];
     
     // save current status
     WorkTimeManager *workManager = [WorkTimeManager defaultInstance];
-    [workManager addEntranceTime:[NSDate date]];
+	[workManager setIsInsideBuilding:![workManager isInsideBuilding]];
+    [workManager addTimeStamp:[NSDate date]];
 }
 
 - (void)beaconManager:(id)manager didExitRegion:(CLBeaconRegion *)region {
     UILocalNotification *notification = [UILocalNotification new];
-    notification.alertBody = @"You're leaving the gate!!";
+    notification.alertBody = @"You're leaving the beacon region!!";
     [[UIApplication sharedApplication] presentLocalNotificationNow:notification];
-    
-    // save current status
-    WorkTimeManager *workManager = [WorkTimeManager defaultInstance];
-    [workManager addExitTime:[NSDate date]];
 }
 
 #pragma mark - AppDelegate protocols

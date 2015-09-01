@@ -13,7 +13,8 @@
 
 @interface HomeViewController () <UITableViewDataSource, UITableViewDelegate>
 
-//@property (nonatomic) WorkTimeManager *timeManager;
+@property (nonatomic, strong) NSArray *todaysList;
+
 @end
 
 @implementation HomeViewController
@@ -21,9 +22,15 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    
-    //WorkTimeManager *manager = [WorkTimeManager defaultInstance];
-    
+	
+	// set switch control
+    WorkTimeManager *manager = [WorkTimeManager defaultInstance];
+	[manager setSwitch:_insideSwitch andLabel:_insideTextLabel];
+	
+	// get today's lists
+	_todaysList = [manager getTodaysList:[NSDate date]];
+	
+	// show current time
     [self checkTime:self];
 }
 
@@ -64,7 +71,7 @@
 
 #pragma mark - table view protocols
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	return 1;
+	return [_todaysList count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -76,10 +83,26 @@
 	}
 	
 	// customize cell
+	NSDictionary *data = _todaysList[indexPath.row];
+	if (data) {
+		NSString *displayString = [NSString stringWithFormat:@"duration: %@", [data[kDuration] stringValue]];
+		[cell.textLabel setText:displayString];
+	}
 	
 	return cell;
 }
 
+- (IBAction)switchValueChanged:(id)sender {
+	WorkTimeManager *manager = [WorkTimeManager defaultInstance];
+	if ([sender isOn]) {
+		[manager setIsInsideBuilding:YES];
+		[manager setSwitch:_insideSwitch andLabel:_insideTextLabel];
+	}
+	else {
+		[manager setIsInsideBuilding:NO];
+		[manager setSwitch:_insideSwitch andLabel:_insideTextLabel];
+	}
+}
 
 
 @end

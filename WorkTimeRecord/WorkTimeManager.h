@@ -7,6 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
+
+// define the keys for dictionary
+#define kIn @"in"				// NSString from NSDate
+#define kOut @"out"				// NSString from NSDate
+#define kDuration @"duration"	// integer
 
 @interface WorkTimeManager : NSObject
 
@@ -22,9 +28,8 @@
 
 #pragma mark - instance methods
 
-// enter & exit setter
-- (void)addEntranceTime:(NSDate *)entranceTime;
-- (void)addExitTime:(NSDate *)exitTime;
+// add time stamp
+- (void)addTimeStamp:(NSDate *)time;
 
 // backup
 - (void)saveAsFile;
@@ -34,5 +39,8 @@
 
 // accessor
 - (NSArray *)getTodaysList:(NSDate *)today;
+
+// UI related
+- (void)setSwitch:(UISwitch *)mySwitch andLabel:(UILabel *)label;
 
 @end

@@ -40,13 +40,14 @@
 
 #pragma mark - simulation methods
 - (IBAction)simulateEntranceButton:(id)sender {
-    WorkTimeManager *manager = [WorkTimeManager defaultInstance];
-    [manager addEntranceTime:[NSDate date]];
+	WorkTimeManager *workManager = [WorkTimeManager defaultInstance];
+	[workManager setIsInsideBuilding:![workManager isInsideBuilding]];
+	[workManager addTimeStamp:[NSDate date]];
 }
 
 - (IBAction)simulateExitButton:(id)sender {
-    WorkTimeManager *manager = [WorkTimeManager defaultInstance];
-    [manager addExitTime:[NSDate date]];
+    //WorkTimeManager *manager = [WorkTimeManager defaultInstance];
+    //[manager addExitTime:[NSDate date]];
 }
 
 - (IBAction)simulateSaveButton:(id)sender {

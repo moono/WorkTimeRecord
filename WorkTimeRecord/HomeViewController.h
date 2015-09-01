@@ -11,5 +11,8 @@
 @interface HomeViewController : UIViewController
 @property (weak, nonatomic) IBOutlet UILabel *todaysDateLabel;
 @property (weak, nonatomic) IBOutlet UILabel *currentTimeLabel;
+@property (weak, nonatomic) IBOutlet UISwitch *insideSwitch;
+@property (weak, nonatomic) IBOutlet UILabel *insideTextLabel;
 
+- (IBAction)switchValueChanged:(id)sender;
 @end
