@@ -7,14 +7,14 @@
 	<key>IDESourceControlProjectIdentifier</key>
 	<string>7E7FD548-9E96-47F1-B00E-AB98FECFA4DB</string>
 	<key>IDESourceControlProjectName</key>
-	<string>project</string>
+	<string>WorkTimeRecord</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
 		<key>C315EC9F723F23769EFB41DF43C6AE7DB9E662F7</key>
 		<string>https://github.com/moono/WorkTimeRecord.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>WorkTimeRecord.xcodeproj/project.xcworkspace</string>
+	<string>WorkTimeRecord.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>C315EC9F723F23769EFB41DF43C6AE7DB9E662F7</key>

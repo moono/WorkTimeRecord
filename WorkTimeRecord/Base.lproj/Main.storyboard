@@ -18,12 +18,12 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ljA-4g-21v" userLabel="Date view">
-                                <rect key="frame" x="0.0" y="50" width="300" height="30"/>
+                                <rect key="frame" x="0.0" y="71" width="300" height="30"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Today's Date Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XCq-vR-Ysj">
                                         <rect key="frame" x="66" y="3" width="168" height="23"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="19"/>
-                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
@@ -35,16 +35,25 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XBY-5m-PWO" userLabel="Time view">
-                                <rect key="frame" x="300" y="50" width="300" height="30"/>
+                                <rect key="frame" x="300" y="71" width="300" height="30"/>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Current Time Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u9O-kr-63i">
-                                <rect key="frame" x="371" y="55" width="159" height="22"/>
+                                <rect key="frame" x="371" y="75" width="159" height="22"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="9dL-5b-mOR" userLabel="Today's list table view">
-                                <rect key="frame" x="0.0" y="95" width="600" height="455"/>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dBG-h2-sCM">
+                                <rect key="frame" x="16" y="30" width="51" height="31"/>
+                            </switch>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="출근 or 퇴근" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vev-Hg-2VW">
+                                <rect key="frame" x="85" y="30" width="124" height="30"/>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="25"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="9dL-5b-mOR" userLabel="Today's list table view">
+                                <rect key="frame" x="0.0" y="117" width="600" height="434"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
                                     <outlet property="dataSource" destination="BYZ-38-t0r" id="uou-BH-hSW"/>
@@ -55,18 +64,22 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="u9O-kr-63i" firstAttribute="centerX" secondItem="XBY-5m-PWO" secondAttribute="centerX" id="0I3-cE-kcb"/>
+                            <constraint firstItem="dBG-h2-sCM" firstAttribute="top" secondItem="Vev-Hg-2VW" secondAttribute="top" id="5AI-mC-gnc"/>
                             <constraint firstItem="ljA-4g-21v" firstAttribute="top" secondItem="XBY-5m-PWO" secondAttribute="top" id="5oo-WN-8mf"/>
                             <constraint firstAttribute="bottom" secondItem="9dL-5b-mOR" secondAttribute="bottom" constant="50" id="Aub-TV-Yxe"/>
+                            <constraint firstItem="dBG-h2-sCM" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" constant="30" id="BaN-qs-QdL"/>
+                            <constraint firstItem="Vev-Hg-2VW" firstAttribute="leading" secondItem="dBG-h2-sCM" secondAttribute="trailing" constant="20" id="CaK-jt-hUe"/>
                             <constraint firstItem="ljA-4g-21v" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="Cj1-Ki-Yvo"/>
                             <constraint firstAttribute="width" secondItem="9dL-5b-mOR" secondAttribute="width" id="Cnt-vg-gEW"/>
                             <constraint firstItem="ljA-4g-21v" firstAttribute="height" secondItem="XBY-5m-PWO" secondAttribute="height" id="FS9-wb-8xA"/>
                             <constraint firstItem="u9O-kr-63i" firstAttribute="centerY" secondItem="XBY-5m-PWO" secondAttribute="centerY" id="Myc-6X-ENH"/>
                             <constraint firstItem="ljA-4g-21v" firstAttribute="width" secondItem="XBY-5m-PWO" secondAttribute="width" id="RtB-Ke-hC3"/>
                             <constraint firstAttribute="trailing" secondItem="XBY-5m-PWO" secondAttribute="trailing" id="SfY-dv-pwP"/>
+                            <constraint firstItem="ljA-4g-21v" firstAttribute="top" secondItem="dBG-h2-sCM" secondAttribute="bottom" constant="10" id="VzG-NY-MmD"/>
                             <constraint firstItem="9dL-5b-mOR" firstAttribute="top" secondItem="ljA-4g-21v" secondAttribute="bottom" constant="15" id="XfH-ao-U3u"/>
                             <constraint firstAttribute="width" secondItem="ljA-4g-21v" secondAttribute="width" multiplier="2" id="ZUe-UK-WVU"/>
-                            <constraint firstItem="ljA-4g-21v" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" constant="50" id="bDI-75-Wnw"/>
                             <constraint firstAttribute="centerX" secondItem="9dL-5b-mOR" secondAttribute="centerX" id="hxr-gg-ubX"/>
+                            <constraint firstItem="dBG-h2-sCM" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="16" id="ynh-tv-5VA"/>
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Home" id="kWd-MZ-Uee" userLabel="Home"/>
