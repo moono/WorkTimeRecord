@@ -13,6 +13,8 @@
 
 @interface HomeViewController () <UITableViewDataSource, UITableViewDelegate>
 
+@property (nonatomic, strong) NSString *startTime;
+@property (nonatomic, strong) NSString *endTime;
 @property (nonatomic, strong) NSArray *todaysList;
 @property (nonatomic, strong) NSDateFormatter *dateFormatter;
 @property (nonatomic, strong) NSDateFormatter *timeFormatter;
@@ -50,7 +52,7 @@
 
 - (void)refreshTableView:(UIRefreshControl *)refreshControl {
     // do refreshing job
-    // ...
+    [self refreshUI];
     
     [refreshControl endRefreshing];
 }
@@ -87,9 +89,21 @@
 }
 
 - (void)refreshUI {
+    // get current date
+    NSDate *currentDate = [NSDate date];
+    
     // get todays array
     WorkTimeManager *manager = [WorkTimeManager defaultInstance];
-    _todaysList = [manager getTimeList:[NSDate date]];
+    _startTime = [manager getStartTime:currentDate];
+    if (_startTime == nil) {
+        _startTime = @"";
+    }
+    _endTime = [manager getEndTime:currentDate];
+    if (_endTime == nil) {
+        _endTime = @"";
+    }
+    
+    _todaysList = [manager getTimeList:currentDate];
     if (_todaysList == nil) {
         _todaysList = [[NSArray alloc] init];
     }
@@ -101,8 +115,27 @@
 }
 
 #pragma mark - table view protocols
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 3;   // start, list, end
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	return [_todaysList count];
+    NSInteger rows = 0;
+    switch (section) {
+        case 0:
+            rows = 1;
+            break;
+        case 1:
+            rows = [_todaysList count];
+            break;
+        case 2:
+            rows = 1;
+            break;
+        default:
+            rows = 0;
+            break;
+    }
+	return rows;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -112,19 +145,74 @@
 	if(cell == nil) {
 		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
 	}
+    switch (indexPath.section) {
+        case 0:
+            if ([_startTime isEqualToString:@""]) {
+                cell.textLabel.text = @"Not yet specified!!";
+            }
+            else {
+                cell.textLabel.text = _startTime;
+            }
+            break;
+        case 1:
+        {
+            // customize cell
+            NSDictionary *data = _todaysList[indexPath.row];
+            if (data) {
+                NSDateFormatter *managerDateTimeFormatter = [[WorkTimeManager defaultInstance] dateTimeFormatter];
+                NSDate *inDate = [managerDateTimeFormatter dateFromString:[data valueForKey:kIn]];
+                NSDate *outDate = [managerDateTimeFormatter dateFromString:[data valueForKey:kOut]];
+                NSString *displayString = [NSString stringWithFormat:@"[%@s]: %@ ~ %@", [data[kDuration] stringValue], [_timeFormatter stringFromDate:inDate], [_timeFormatter stringFromDate:outDate]];
+                [cell.textLabel setText:displayString];
+                
+                // change color
+                if ([data[kDuration] intValue] > 10) {
+                    cell.textLabel.backgroundColor = [UIColor redColor];
+                    cell.textLabel.textColor = [UIColor whiteColor];
+                }
+                else {
+                    cell.textLabel.backgroundColor = [UIColor whiteColor];
+                    cell.textLabel.textColor = [UIColor blackColor];
+                }
+            }
+            break;
+        }
+        case 2:
+            if ([_endTime isEqualToString:@""]) {
+                cell.textLabel.text = @"Not yet specified!!";
+            }
+            else {
+                cell.textLabel.text = _endTime;
+            }
+            break;
+        default:
+            break;
+    }
 	
-	// customize cell
-	NSDictionary *data = _todaysList[indexPath.row];
-	if (data) {
-        NSDateFormatter *managerDateTimeFormatter = [[WorkTimeManager defaultInstance] dateTimeFormatter];
-        NSDate *inDate = [managerDateTimeFormatter dateFromString:[data valueForKey:kIn]];
-        NSDate *outDate = [managerDateTimeFormatter dateFromString:[data valueForKey:kOut]];
-		NSString *displayString = [NSString stringWithFormat:@"[%@s]: %@ ~ %@", [data[kDuration] stringValue], [_timeFormatter stringFromDate:inDate], [_timeFormatter stringFromDate:outDate]];
-		[cell.textLabel setText:displayString];
-	}
 	
 	return cell;
 }
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    NSString *sectionName;
+    switch (section)
+    {
+        case 0:
+            sectionName = @"Start time";
+            break;
+        case 1:
+            sectionName = @"Today's list";
+            break;
+        case 2:
+            sectionName = @"End time";
+            break;
+        default:
+            sectionName = @"";
+            break;
+    }
+    return sectionName;
+}
+
 
 #pragma mark - action events
 - (IBAction)switchValueChanged:(id)sender {

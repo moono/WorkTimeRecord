@@ -47,6 +47,8 @@
 
 // accessor
 - (NSArray *)getTimeList:(NSDate *)today;
+- (NSString *)getStartTime:(NSDate *)today;
+- (NSString *)getEndTime:(NSDate *)today;
 
 // UI related
 - (void)setSwitch:(UISwitch *)mySwitch andLabel:(UILabel *)label;

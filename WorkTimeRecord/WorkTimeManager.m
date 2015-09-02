@@ -136,7 +136,7 @@
                 // add new one
                 [_history addObject: @{ kDate : [_dateTimeFormatter stringFromDate:[calendar dateFromComponents:startComponents]],
                                         kStart : [_dateTimeFormatter stringFromDate:time],
-                                        kEnd : [NSNull null],
+                                        kEnd : @"",
                                         kList : [[NSMutableArray alloc] init] }];
             }
             else {
@@ -226,6 +226,34 @@
                               }];
     
     return [_history filteredArrayUsingPredicate:predicate];
+}
+
+- (NSString *)getStartTime:(NSDate *)today {
+    NSArray *currentDayArray = [self getTodaysInformation:today];
+    if ([currentDayArray count] == 0) {
+        return nil;
+    }
+    else {
+        NSDate *startDate = [_dateTimeFormatter dateFromString:currentDayArray[0][kStart]];
+        return [_timeFormatter stringFromDate:startDate];
+    }
+}
+
+- (NSString *)getEndTime:(NSDate *)today {
+    NSArray *currentDayArray = [self getTodaysInformation:today];
+    if ([currentDayArray count] == 0) {
+        return nil;
+    }
+    else {
+        NSString *endDateString = currentDayArray[0][kEnd];
+        if ([endDateString isEqualToString:@""]) {
+            return nil;
+        }
+        else {
+            NSDate *startDate = [_dateTimeFormatter dateFromString:endDateString];
+            return [_timeFormatter stringFromDate:startDate];
+        }
+    }
 }
 
 - (NSArray *)getTimeList:(NSDate *)today {

@@ -55,16 +55,16 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="9dL-5b-mOR" userLabel="Today's list table view">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" translatesAutoresizingMaskIntoConstraints="NO" id="9dL-5b-mOR" userLabel="Today's list table view">
                                 <rect key="frame" x="0.0" y="147" width="600" height="453"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                                 <connections>
                                     <outlet property="dataSource" destination="BYZ-38-t0r" id="uou-BH-hSW"/>
                                     <outlet property="delegate" destination="BYZ-38-t0r" id="fL0-mc-ZZZ"/>
                                 </connections>
                             </tableView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hje-wo-a4n">
-                                <rect key="frame" x="285" y="110" width="30" height="30"/>
+                                <rect key="frame" x="540" y="110" width="30" height="30"/>
                                 <state key="normal" title="Test">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -79,7 +79,6 @@
                             <constraint firstItem="Vev-Hg-2VW" firstAttribute="leading" secondItem="dBG-h2-sCM" secondAttribute="trailing" constant="20" id="2sw-Lb-ucZ"/>
                             <constraint firstItem="ljA-4g-21v" firstAttribute="top" secondItem="XBY-5m-PWO" secondAttribute="top" id="5oo-WN-8mf"/>
                             <constraint firstAttribute="bottom" secondItem="9dL-5b-mOR" secondAttribute="bottom" id="Aub-TV-Yxe"/>
-                            <constraint firstAttribute="centerX" secondItem="Hje-wo-a4n" secondAttribute="centerX" id="CN3-aC-NEr"/>
                             <constraint firstItem="ljA-4g-21v" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="Cj1-Ki-Yvo"/>
                             <constraint firstAttribute="width" secondItem="9dL-5b-mOR" secondAttribute="width" id="Cnt-vg-gEW"/>
                             <constraint firstItem="ljA-4g-21v" firstAttribute="height" secondItem="XBY-5m-PWO" secondAttribute="height" id="FS9-wb-8xA"/>
@@ -90,6 +89,7 @@
                             <constraint firstItem="dBG-h2-sCM" firstAttribute="top" secondItem="Vev-Hg-2VW" secondAttribute="top" id="WuY-Zh-fRk"/>
                             <constraint firstAttribute="width" secondItem="ljA-4g-21v" secondAttribute="width" multiplier="2" id="ZUe-UK-WVU"/>
                             <constraint firstItem="Hje-wo-a4n" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" constant="110" id="bEH-XU-7Rk"/>
+                            <constraint firstAttribute="trailing" secondItem="Hje-wo-a4n" secondAttribute="trailing" constant="30" id="cdX-JY-Iea"/>
                             <constraint firstItem="dBG-h2-sCM" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="5" id="eki-kh-QnD"/>
                             <constraint firstAttribute="centerX" secondItem="9dL-5b-mOR" secondAttribute="centerX" id="hxr-gg-ubX"/>
                             <constraint firstItem="dBG-h2-sCM" firstAttribute="top" secondItem="ljA-4g-21v" secondAttribute="bottom" constant="5" id="oh9-6S-SXC"/>
