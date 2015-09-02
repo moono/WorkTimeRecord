@@ -106,4 +106,7 @@
     
     [self dismissViewControllerAnimated:YES completion:nil];
 }
+
+- (IBAction)testing:(id)sender {
+}
 @end

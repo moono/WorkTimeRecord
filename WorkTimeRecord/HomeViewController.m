@@ -14,6 +14,8 @@
 @interface HomeViewController () <UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, strong) NSArray *todaysList;
+@property (nonatomic, strong) NSDateFormatter *dateFormatter;
+@property (nonatomic, strong) NSDateFormatter *timeFormatter;
 
 @end
 
@@ -27,14 +29,16 @@
     UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
     [refreshControl addTarget:self action:@selector(refreshTableView:) forControlEvents:UIControlEventValueChanged];
     [_tableView addSubview:refreshControl];
+	
+    // initialize date formatter
+    _dateFormatter = [[NSDateFormatter alloc] init];
+    [_dateFormatter setDateFormat:@"yyyy-MM-dd"];
+    _timeFormatter = [[NSDateFormatter alloc] init];
+    [_timeFormatter setDateFormat:@"HH:mm:ss"];
     
-	// set switch control
-    WorkTimeManager *manager = [WorkTimeManager defaultInstance];
-	[manager setSwitch:_insideSwitch andLabel:_insideTextLabel];
-	
-	// get today's lists
-	_todaysList = [manager getTodaysList:[NSDate date]];
-	
+    // update UI
+    [self refreshUI];
+    
 	// show current time
     [self checkTime:self];
 }
@@ -73,19 +77,27 @@
 {
     // to get current date
     NSDate *today = [NSDate date];
-    NSDateFormatter *timeFormatter = [[NSDateFormatter alloc] init];
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    
-    // set format of date: time
-    [timeFormatter setDateFormat:@"HH:mm:ss"];
-    [dateFormatter setDateFormat:@"yyyy-MM-dd"];
     
     // set time & date to label
-    [_currentTimeLabel setText:[timeFormatter stringFromDate:today]];
-    [_todaysDateLabel setText:[dateFormatter stringFromDate:today]];
+    [_currentTimeLabel setText:[_timeFormatter stringFromDate:today]];
+    [_todaysDateLabel setText:[_dateFormatter stringFromDate:today]];
     
     // tell controller to call this method for every second
     [self performSelector:@selector(checkTime:) withObject:self afterDelay:1.0];
+}
+
+- (void)refreshUI {
+    // get todays array
+    WorkTimeManager *manager = [WorkTimeManager defaultInstance];
+    _todaysList = [manager getTimeList:[NSDate date]];
+    if (_todaysList == nil) {
+        _todaysList = [[NSArray alloc] init];
+    }
+    // set switch control
+    [manager setSwitch:_insideSwitch andLabel:_insideTextLabel];
+    
+    // refresh table view
+    [_tableView reloadData];
 }
 
 #pragma mark - table view protocols
@@ -104,13 +116,17 @@
 	// customize cell
 	NSDictionary *data = _todaysList[indexPath.row];
 	if (data) {
-		NSString *displayString = [NSString stringWithFormat:@"duration: %@", [data[kDuration] stringValue]];
+        NSDateFormatter *managerDateTimeFormatter = [[WorkTimeManager defaultInstance] dateTimeFormatter];
+        NSDate *inDate = [managerDateTimeFormatter dateFromString:[data valueForKey:kIn]];
+        NSDate *outDate = [managerDateTimeFormatter dateFromString:[data valueForKey:kOut]];
+		NSString *displayString = [NSString stringWithFormat:@"[%@s]: %@ ~ %@", [data[kDuration] stringValue], [_timeFormatter stringFromDate:inDate], [_timeFormatter stringFromDate:outDate]];
 		[cell.textLabel setText:displayString];
 	}
 	
 	return cell;
 }
 
+#pragma mark - action events
 - (IBAction)switchValueChanged:(id)sender {
 	WorkTimeManager *manager = [WorkTimeManager defaultInstance];
 	if ([sender isOn]) {
@@ -121,6 +137,14 @@
 		[manager setIsInsideBuilding:NO];
 		[manager setSwitch:_insideSwitch andLabel:_insideTextLabel];
 	}
+}
+
+- (IBAction)testing:(id)sender {
+    WorkTimeManager *manager = [WorkTimeManager defaultInstance];
+    [manager addTimeStamp:[NSDate date]];
+    
+    // update UI
+    [self refreshUI];
 }
 
 

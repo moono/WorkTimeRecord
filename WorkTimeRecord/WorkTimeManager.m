@@ -11,13 +11,51 @@
 @interface WorkTimeManager ()
 
 // contains all history of the time
+// [
+//      {
+//      "date" : NSDate ==> NSString with dateFormatter
+//      "start" : NSDate ==> NSString with dateTimeFormatter
+//      "end" : NSDate ==> NSString with dateTimeFormatter
+//      "list" : [
+//                  {
+//                  "duration" : (int)
+//                  "in"  : NSDate ==> NSString with dateTimeFormatter
+//                  "out" : NSDate ==> NSString with dateTimeFormatter
+//                  },
+//                  {
+//                  "duration" : (int)
+//                  "in"  : NSDate ==> NSString with dateTimeFormatter
+//                  "out" : NSDate ==> NSString with dateTimeFormatter
+//                  },
+//                  ...
+//              ]
+//      },
+//      {
+//      "date" : NSDate ==> NSString with dateFormatter
+//      "start" : NSDate ==> NSString with dateTimeFormatter
+//      "end" : NSDate ==> NSString with dateTimeFormatter
+//      "list" : [
+//                  {
+//                  "duration" : (int)
+//                  "in"  : NSDate ==> NSString with dateTimeFormatter
+//                  "out" : NSDate ==> NSString with dateTimeFormatter
+//                  },
+//                  {
+//                  "duration" : (int)
+//                  "in"  : NSDate ==> NSString with dateTimeFormatter
+//                  "out" : NSDate ==> NSString with dateTimeFormatter
+//                  },
+//                  ...
+//              ]
+//      },
+//      ...
+// ]
 @property (nonatomic, strong) NSMutableArray *history;
 
 // file name to backup the data
 @property (nonatomic, strong) NSString *historyFileName;
 
-// for managing time
-@property (nonatomic, strong) NSDateFormatter *dateFormatter;
+
 
 // stores date(time) of previously entered the monitoring region
 @property (nonatomic, strong) NSDate *lastInDate;
@@ -44,10 +82,14 @@
 	// set initial state
 	_isInsideBuilding = NO;
 	
-    // set date formatter
-    _dateFormatter = [NSDateFormatter new];
-    [_dateFormatter setDateFormat:@"yyyy-MM-dd 'at' HH:mm:ss"];
-    [_dateFormatter setTimeZone:[NSTimeZone systemTimeZone]];
+    // set date formatters
+    _dateTimeFormatter = [NSDateFormatter new];
+    [_dateTimeFormatter setDateFormat:@"yyyy-MM-dd 'at' HH:mm:ss"];
+    //[_dateTimeFormatter setTimeZone:[NSTimeZone systemTimeZone]];
+    _dateFormatter = [[NSDateFormatter alloc] init];
+    [_dateFormatter setDateFormat:@"yyyy-MM-dd"];
+    _timeFormatter = [[NSDateFormatter alloc] init];
+    [_timeFormatter setDateFormat:@"HH:mm:ss"];
     
     // get the documents directory
     NSString *currentDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
@@ -71,26 +113,51 @@
 
 #pragma mark - time management inputs
 - (void)addTimeStamp:(NSDate *)time {
+    _isInsideBuilding = !_isInsideBuilding;
+    
+    // find today's dictionary
+    NSArray *currentDayArray = [self getTodaysInformation:time];
+    
+    // going out from work place
 	if (_isInsideBuilding == NO) {
 		_lastInDate = time;
 	}
-	else {  // _isInsideBuilding == YES
+    // cominig in to work place
+	else {
 		if (_lastInDate == nil) {
-			NSLog(@"Something Wrong....!!!");
-			return;
+            if ([currentDayArray count] == 0) {
+                // create 00:00:00 date component
+                NSCalendar *calendar = [NSCalendar currentCalendar];
+                NSDateComponents *startComponents = [calendar components:(NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitYear|NSCalendarUnitHour|NSCalendarUnitMinute|NSCalendarUnitSecond) fromDate:time];
+                [startComponents setHour: 00];
+                [startComponents setMinute: 00];
+                [startComponents setSecond: 00];
+                
+                // add new one
+                [_history addObject: @{ kDate : [_dateTimeFormatter stringFromDate:[calendar dateFromComponents:startComponents]],
+                                        kStart : [_dateTimeFormatter stringFromDate:time],
+                                        kEnd : [NSNull null],
+                                        kList : [[NSMutableArray alloc] init] }];
+            }
+            else {
+                NSLog(@"Unexpected control...");
+            }
 		}
-		
-		// compute time difference between enter & exit
-		double timeInterval = [time timeIntervalSinceDate:_lastInDate];
-		int rounded = (int)round(timeInterval);
-		
-		// save
-		[_history addObject:@{kIn : [_dateFormatter stringFromDate:_lastInDate],
-							  kOut : [_dateFormatter stringFromDate:time],
-							  kDuration : [NSNumber numberWithDouble:rounded]}];
-		
-		// set last In time as nil
-		_lastInDate = nil;
+        else {
+            NSMutableArray *listArray = currentDayArray[0][kList];
+            
+            // compute time difference between enter & exit
+            double timeInterval = [time timeIntervalSinceDate:_lastInDate];
+            int rounded = (int)round(timeInterval);
+            
+            // save
+            [listArray addObject:@{kIn : [_dateTimeFormatter stringFromDate:_lastInDate],
+                                   kOut : [_dateTimeFormatter stringFromDate:time],
+                                   kDuration : [NSNumber numberWithDouble:rounded]}];
+            
+            // set last In time as nil
+            _lastInDate = nil;
+        }
 	}
 	
     NSLog(@"%@", _history);
@@ -136,7 +203,7 @@
 
 
 #pragma mark - my methods
-- (NSArray *)getTodaysList:(NSDate *)today {
+- (NSArray *)getTodaysInformation:(NSDate *)today {
     // //////////////////////////////////////////////// //
     // all the dates inside this method is GMT based!!! //
     // //////////////////////////////////////////////// //
@@ -148,27 +215,60 @@
     [startComponents setMinute: 00];
     [startComponents setSecond: 00];
     
-    NSDateComponents *endComponents = [calendar components:(NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitYear|NSCalendarUnitHour|NSCalendarUnitMinute|NSCalendarUnitSecond) fromDate:today];
-    [endComponents setHour: 23];
-    [endComponents setMinute: 59];
-    [endComponents setSecond: 59];
-    
     NSDate *startDate = [calendar dateFromComponents:startComponents];
-    NSDate *endDate = [calendar dateFromComponents:endComponents];
-	NSLog(@"Today: %@", today);
-    NSLog(@"기준: %@ ~ %@", startDate, endDate);
     
     //NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(in >= %@) AND (in =< %@)", startDate, endDate];
     NSPredicate *predicate = [NSPredicate predicateWithBlock:
                               ^BOOL(id evaluatedObject, NSDictionary *bindings)
-    {
-		NSDate *inDate = [_dateFormatter dateFromString:[evaluatedObject valueForKey:kIn]];
-		NSDate *outDate = [_dateFormatter dateFromString:[evaluatedObject valueForKey:kOut]];
-        NSLog(@"내부: %@ ~ %@", inDate, outDate);
-        return ( (inDate >= startDate) &&  (outDate <= endDate) );
-    }];
+                              {
+                                  NSDate *currentDate = [_dateTimeFormatter dateFromString:[evaluatedObject valueForKey:kDate]];
+                                  return startDate == currentDate;
+                              }];
     
     return [_history filteredArrayUsingPredicate:predicate];
+}
+
+- (NSArray *)getTimeList:(NSDate *)today {
+    // //////////////////////////////////////////////// //
+    // all the dates inside this method is GMT based!!! //
+    // //////////////////////////////////////////////// //
+    
+    NSArray *currentDayArray = [self getTodaysInformation:today];
+    if ([currentDayArray count] == 0) {
+        return nil;
+    }
+    else {
+        return currentDayArray[0][kList];
+    }
+    
+//    // search within the history and return today's time stamp history
+//    NSCalendar *calendar = [NSCalendar currentCalendar];
+//    NSDateComponents *startComponents = [calendar components:(NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitYear|NSCalendarUnitHour|NSCalendarUnitMinute|NSCalendarUnitSecond) fromDate:today];
+//    [startComponents setHour: 00];
+//    [startComponents setMinute: 00];
+//    [startComponents setSecond: 00];
+//    
+//    NSDateComponents *endComponents = [calendar components:(NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitYear|NSCalendarUnitHour|NSCalendarUnitMinute|NSCalendarUnitSecond) fromDate:today];
+//    [endComponents setHour: 23];
+//    [endComponents setMinute: 59];
+//    [endComponents setSecond: 59];
+//    
+//    NSDate *startDate = [calendar dateFromComponents:startComponents];
+//    NSDate *endDate = [calendar dateFromComponents:endComponents];
+//	NSLog(@"Today: %@", today);
+//    NSLog(@"기준: %@ ~ %@", startDate, endDate);
+//    
+//    //NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(in >= %@) AND (in =< %@)", startDate, endDate];
+//    NSPredicate *predicate = [NSPredicate predicateWithBlock:
+//                              ^BOOL(id evaluatedObject, NSDictionary *bindings)
+//    {
+//		NSDate *inDate = [_dateTimeFormatter dateFromString:[evaluatedObject valueForKey:kIn]];
+//		NSDate *outDate = [_dateTimeFormatter dateFromString:[evaluatedObject valueForKey:kOut]];
+//        NSLog(@"내부: %@ ~ %@", inDate, outDate);
+//        return ( (inDate >= startDate) &&  (outDate <= endDate) );
+//    }];
+//    
+//    return [_history filteredArrayUsingPredicate:predicate];
 }
 
 - (void)setSwitch:(UISwitch *)mySwitch andLabel:(UILabel *)label {

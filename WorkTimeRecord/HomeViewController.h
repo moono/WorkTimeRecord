@@ -16,4 +16,5 @@
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 - (IBAction)switchValueChanged:(id)sender;
+- (IBAction)testing:(id)sender;
 @end

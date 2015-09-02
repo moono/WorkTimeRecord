@@ -13,5 +13,6 @@
 @property (weak, nonatomic) id delegate;
 
 - (IBAction)closeView:(id)sender;
+- (IBAction)testing:(id)sender;
 
 @end

@@ -16,9 +16,6 @@
 
 @interface AppDelegate () <ESTBeaconManagerDelegate>
 
-//// directory of this app's Document
-//@property (nonatomic, strong) NSString *currentDirectory;
-
 // add property to hold the beacon manager
 @property (nonatomic) ESTBeaconManager *beaconManager;
 
@@ -37,7 +34,7 @@
     
     // save current status
     WorkTimeManager *workManager = [WorkTimeManager defaultInstance];
-	[workManager setIsInsideBuilding:![workManager isInsideBuilding]];
+	//[workManager setIsInsideBuilding:![workManager isInsideBuilding]];
     [workManager addTimeStamp:[NSDate date]];
 }
 
