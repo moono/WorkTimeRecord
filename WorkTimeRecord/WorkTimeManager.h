@@ -37,7 +37,7 @@
 #pragma mark - instance methods
 
 // add time stamp
-- (void)addTimeStamp:(NSDate *)time;
+- (BOOL)addTimeStamp:(NSDate *)time;
 
 // backup
 - (void)saveAsFile;

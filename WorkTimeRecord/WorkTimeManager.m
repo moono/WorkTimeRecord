@@ -112,36 +112,46 @@
 }
 
 #pragma mark - time management inputs
-- (void)addTimeStamp:(NSDate *)time {
+- (BOOL)addTimeStamp:(NSDate *)time {
     _isInsideBuilding = !_isInsideBuilding;
     
     // find today's dictionary
     NSArray *currentDayArray = [self getTodaysInformation:time];
     
+    // check error state
+    if ([currentDayArray count] == 0 && _isInsideBuilding == NO) {
+        return FALSE;
+    }
+    // check if there are no information about today...
+    else if ([currentDayArray count] == 0 && _isInsideBuilding == YES) {
+        // create 00:00:00 date component
+        NSCalendar *calendar = [NSCalendar currentCalendar];
+        NSDateComponents *startComponents = [calendar components:(NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitYear|NSCalendarUnitHour|NSCalendarUnitMinute|NSCalendarUnitSecond) fromDate:time];
+        [startComponents setHour: 00];
+        [startComponents setMinute: 00];
+        [startComponents setSecond: 00];
+        
+        // add new one
+        [_history addObject: @{ kDate : [_dateTimeFormatter stringFromDate:[calendar dateFromComponents:startComponents]],
+                                kStart : [_dateTimeFormatter stringFromDate:time],
+                                kEnd : @"",
+                                kList : [[NSMutableArray alloc] init] }];
+        
+        return TRUE;
+    }
+    
     // going out from work place
 	if (_isInsideBuilding == NO) {
 		_lastInDate = time;
+        
+//        // replace end time (not working....)
+//        NSMutableDictionary *todaysItem = [[currentDayArray firstObject] mutableCopy];
+//        [todaysItem setObject:[_dateTimeFormatter stringFromDate:time] forKey:kEnd];
 	}
     // cominig in to work place
 	else {
 		if (_lastInDate == nil) {
-            if ([currentDayArray count] == 0) {
-                // create 00:00:00 date component
-                NSCalendar *calendar = [NSCalendar currentCalendar];
-                NSDateComponents *startComponents = [calendar components:(NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitYear|NSCalendarUnitHour|NSCalendarUnitMinute|NSCalendarUnitSecond) fromDate:time];
-                [startComponents setHour: 00];
-                [startComponents setMinute: 00];
-                [startComponents setSecond: 00];
-                
-                // add new one
-                [_history addObject: @{ kDate : [_dateTimeFormatter stringFromDate:[calendar dateFromComponents:startComponents]],
-                                        kStart : [_dateTimeFormatter stringFromDate:time],
-                                        kEnd : @"",
-                                        kList : [[NSMutableArray alloc] init] }];
-            }
-            else {
-                NSLog(@"Unexpected control...");
-            }
+            NSLog(@"Unexpected control...");
 		}
         else {
             NSMutableArray *listArray = currentDayArray[0][kList];
@@ -161,6 +171,8 @@
 	}
 	
     NSLog(@"%@", _history);
+    
+    return TRUE;
 }
 
 #pragma mark - file operations

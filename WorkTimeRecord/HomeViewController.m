@@ -115,8 +115,12 @@
 }
 
 #pragma mark - table view protocols
+// there are 3 sections
+// 0: start time
+// 1: list of times that the user went out
+// 2: end time
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 3;   // start, list, end
+    return 3;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -229,7 +233,11 @@
 
 - (IBAction)testing:(id)sender {
     WorkTimeManager *manager = [WorkTimeManager defaultInstance];
-    [manager addTimeStamp:[NSDate date]];
+    BOOL isAppropriate = [manager addTimeStamp:[NSDate date]];
+    if (isAppropriate == FALSE) {
+        UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Error" message:@"Something Wrong!!" delegate:self cancelButtonTitle:@"Close" otherButtonTitles:nil];
+        [alert show];
+    }
     
     // update UI
     [self refreshUI];

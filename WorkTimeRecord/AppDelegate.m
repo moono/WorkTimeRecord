@@ -35,7 +35,11 @@
     // save current status
     WorkTimeManager *workManager = [WorkTimeManager defaultInstance];
 	//[workManager setIsInsideBuilding:![workManager isInsideBuilding]];
-    [workManager addTimeStamp:[NSDate date]];
+    BOOL isAppropriate = [workManager addTimeStamp:[NSDate date]];
+    if (isAppropriate == FALSE) {
+        UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Error" message:@"Something Wrong!!" delegate:self cancelButtonTitle:@"Close" otherButtonTitles:nil];
+        [alert show];
+    }
 }
 
 - (void)beaconManager:(id)manager didExitRegion:(CLBeaconRegion *)region {
