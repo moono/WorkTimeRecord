@@ -71,10 +71,10 @@
 
 #pragma mark - time management inputs
 - (void)addTimeStamp:(NSDate *)time {
-	if (_isInsideBuilding) {
+	if (_isInsideBuilding == NO) {
 		_lastInDate = time;
 	}
-	else {
+	else {  // _isInsideBuilding == YES
 		if (_lastInDate == nil) {
 			NSLog(@"Something Wrong....!!!");
 			return;

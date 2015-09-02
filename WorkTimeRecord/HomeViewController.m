@@ -23,6 +23,11 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
 	
+    // set refresh control to table view
+    UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
+    [refreshControl addTarget:self action:@selector(refreshTableView:) forControlEvents:UIControlEventValueChanged];
+    [_tableView addSubview:refreshControl];
+    
 	// set switch control
     WorkTimeManager *manager = [WorkTimeManager defaultInstance];
 	[manager setSwitch:_insideSwitch andLabel:_insideTextLabel];
@@ -39,15 +44,29 @@
     // Dispose of any resources that can be recreated.
 }
 
-/*
+- (void)refreshTableView:(UIRefreshControl *)refreshControl {
+    // do refreshing job
+    // ...
+    
+    [refreshControl endRefreshing];
+}
+
 #pragma mark - Navigation
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
+    UIViewController *destination = [segue destinationViewController];
+    if ([segue.identifier isEqualToString:@"detailSegue"]) {
+        //[destination setValue:sender forKey:<#(NSString *)#>];
+    }
+    else {
+        destination = [segue.destinationViewController topViewController];
+    }
+    
+    [destination setValue:self forKeyPath:@"delegate"];
 }
-*/
 
 #pragma mark - my methods
 - (void)checkTime:(id)sender

@@ -13,6 +13,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *currentTimeLabel;
 @property (weak, nonatomic) IBOutlet UISwitch *insideSwitch;
 @property (weak, nonatomic) IBOutlet UILabel *insideTextLabel;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 - (IBAction)switchValueChanged:(id)sender;
 @end

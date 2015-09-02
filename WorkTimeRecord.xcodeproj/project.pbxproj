@@ -14,8 +14,8 @@
 		2A33B89F1B84438B00F2BD25 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2A33B89D1B84438B00F2BD25 /* LaunchScreen.xib */; };
 		2A33B8AB1B84438B00F2BD25 /* WorkTimeRecordTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A33B8AA1B84438B00F2BD25 /* WorkTimeRecordTests.m */; };
 		2A33B8B61B8443FB00F2BD25 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A33B8B51B8443FB00F2BD25 /* HomeViewController.m */; };
-		2A33B8B91B84441700F2BD25 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A33B8B81B84441700F2BD25 /* DetailViewController.m */; };
 		2A33B8BC1B8453CD00F2BD25 /* WorkTimeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A33B8BB1B8453CD00F2BD25 /* WorkTimeManager.m */; };
+		2A59F8321B96848900146F6B /* DetailTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A59F8311B96848900146F6B /* DetailTableViewController.m */; };
 		2AFA08B41B85A8D0003F8116 /* EstimoteSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2AFA08B31B85A8D0003F8116 /* EstimoteSDK.framework */; };
 /* End PBXBuildFile section */
 
@@ -43,10 +43,10 @@
 		2A33B8AA1B84438B00F2BD25 /* WorkTimeRecordTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WorkTimeRecordTests.m; sourceTree = "<group>"; };
 		2A33B8B41B8443FB00F2BD25 /* HomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
 		2A33B8B51B8443FB00F2BD25 /* HomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
-		2A33B8B71B84441700F2BD25 /* DetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
-		2A33B8B81B84441700F2BD25 /* DetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailViewController.m; sourceTree = "<group>"; };
 		2A33B8BA1B8453CD00F2BD25 /* WorkTimeManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WorkTimeManager.h; sourceTree = "<group>"; };
 		2A33B8BB1B8453CD00F2BD25 /* WorkTimeManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WorkTimeManager.m; sourceTree = "<group>"; };
+		2A59F8301B96848900146F6B /* DetailTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailTableViewController.h; sourceTree = "<group>"; };
+		2A59F8311B96848900146F6B /* DetailTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailTableViewController.m; sourceTree = "<group>"; };
 		2AFA08B31B85A8D0003F8116 /* EstimoteSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = EstimoteSDK.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -99,10 +99,10 @@
 				2A33B88E1B84438B00F2BD25 /* Supporting Files */,
 				2A33B8B41B8443FB00F2BD25 /* HomeViewController.h */,
 				2A33B8B51B8443FB00F2BD25 /* HomeViewController.m */,
-				2A33B8B71B84441700F2BD25 /* DetailViewController.h */,
-				2A33B8B81B84441700F2BD25 /* DetailViewController.m */,
 				2A33B8BA1B8453CD00F2BD25 /* WorkTimeManager.h */,
 				2A33B8BB1B8453CD00F2BD25 /* WorkTimeManager.m */,
+				2A59F8301B96848900146F6B /* DetailTableViewController.h */,
+				2A59F8311B96848900146F6B /* DetailTableViewController.m */,
 			);
 			path = WorkTimeRecord;
 			sourceTree = "<group>";
@@ -234,11 +234,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2A59F8321B96848900146F6B /* DetailTableViewController.m in Sources */,
 				2A33B8941B84438B00F2BD25 /* AppDelegate.m in Sources */,
 				2A33B8911B84438B00F2BD25 /* main.m in Sources */,
 				2A33B8B61B8443FB00F2BD25 /* HomeViewController.m in Sources */,
 				2A33B8BC1B8453CD00F2BD25 /* WorkTimeManager.m in Sources */,
-				2A33B8B91B84441700F2BD25 /* DetailViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
