@@ -140,13 +140,21 @@
         return TRUE;
     }
     
+    // grap appropriate dictionary item
+    // getTodaysInformation method only returns size 1 array of NSDictionary if found
+    NSDictionary *correspondingItem = [currentDayArray firstObject];
+    
     // going out from work place
 	if (_isInsideBuilding == NO) {
 		_lastInDate = time;
         
-//        // replace end time (not working....)
-//        NSMutableDictionary *todaysItem = [[currentDayArray firstObject] mutableCopy];
-//        [todaysItem setObject:[_dateTimeFormatter stringFromDate:time] forKey:kEnd];
+        // replace end time
+        NSInteger index = [_history indexOfObject:correspondingItem];
+        if (index != NSNotFound) {
+            NSMutableDictionary *todaysItem = [NSMutableDictionary dictionaryWithDictionary:correspondingItem];
+            [todaysItem setObject:[_dateTimeFormatter stringFromDate:time] forKey:kEnd];
+            [_history replaceObjectAtIndex:index withObject:todaysItem];
+        }
 	}
     // cominig in to work place
 	else {
@@ -154,7 +162,7 @@
             NSLog(@"Unexpected control...");
 		}
         else {
-            NSMutableArray *listArray = currentDayArray[0][kList];
+            NSMutableArray *listArray = correspondingItem[kList];
             
             // compute time difference between enter & exit
             double timeInterval = [time timeIntervalSinceDate:_lastInDate];
