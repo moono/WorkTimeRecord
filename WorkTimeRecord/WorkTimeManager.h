@@ -22,6 +22,49 @@
 @interface WorkTimeManager : NSObject
 
 #pragma mark - properties
+
+// contains all history of the time
+// [
+//      {
+//      "date" : NSDate ==> NSString with dateTimeFormatter
+//      "start" : NSDate ==> NSString with dateTimeFormatter
+//      "end" : NSDate ==> NSString with dateTimeFormatter
+//      "list" : [
+//                  {
+//                  "duration" : (int)
+//                  "in"  : NSDate ==> NSString with dateTimeFormatter
+//                  "out" : NSDate ==> NSString with dateTimeFormatter
+//                  },
+//                  {
+//                  "duration" : (int)
+//                  "in"  : NSDate ==> NSString with dateTimeFormatter
+//                  "out" : NSDate ==> NSString with dateTimeFormatter
+//                  },
+//                  ...
+//              ]
+//      },
+//      {
+//      "date" : NSDate ==> NSString with dateTimeFormatter
+//      "start" : NSDate ==> NSString with dateTimeFormatter
+//      "end" : NSDate ==> NSString with dateTimeFormatter
+//      "list" : [
+//                  {
+//                  "duration" : (int)
+//                  "in"  : NSDate ==> NSString with dateTimeFormatter
+//                  "out" : NSDate ==> NSString with dateTimeFormatter
+//                  },
+//                  {
+//                  "duration" : (int)
+//                  "in"  : NSDate ==> NSString with dateTimeFormatter
+//                  "out" : NSDate ==> NSString with dateTimeFormatter
+//                  },
+//                  ...
+//              ]
+//      },
+//      ...
+// ]
+@property (nonatomic, strong) NSMutableArray *history;
+
 // flag to indicate whether the user is inside the building or not
 @property (nonatomic) BOOL isInsideBuilding;
 

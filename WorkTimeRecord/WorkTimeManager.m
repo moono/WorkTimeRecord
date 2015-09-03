@@ -10,52 +10,8 @@
 
 @interface WorkTimeManager ()
 
-// contains all history of the time
-// [
-//      {
-//      "date" : NSDate ==> NSString with dateFormatter
-//      "start" : NSDate ==> NSString with dateTimeFormatter
-//      "end" : NSDate ==> NSString with dateTimeFormatter
-//      "list" : [
-//                  {
-//                  "duration" : (int)
-//                  "in"  : NSDate ==> NSString with dateTimeFormatter
-//                  "out" : NSDate ==> NSString with dateTimeFormatter
-//                  },
-//                  {
-//                  "duration" : (int)
-//                  "in"  : NSDate ==> NSString with dateTimeFormatter
-//                  "out" : NSDate ==> NSString with dateTimeFormatter
-//                  },
-//                  ...
-//              ]
-//      },
-//      {
-//      "date" : NSDate ==> NSString with dateFormatter
-//      "start" : NSDate ==> NSString with dateTimeFormatter
-//      "end" : NSDate ==> NSString with dateTimeFormatter
-//      "list" : [
-//                  {
-//                  "duration" : (int)
-//                  "in"  : NSDate ==> NSString with dateTimeFormatter
-//                  "out" : NSDate ==> NSString with dateTimeFormatter
-//                  },
-//                  {
-//                  "duration" : (int)
-//                  "in"  : NSDate ==> NSString with dateTimeFormatter
-//                  "out" : NSDate ==> NSString with dateTimeFormatter
-//                  },
-//                  ...
-//              ]
-//      },
-//      ...
-// ]
-@property (nonatomic, strong) NSMutableArray *history;
-
 // file name to backup the data
 @property (nonatomic, strong) NSString *historyFileName;
-
-
 
 // stores date(time) of previously entered the monitoring region
 @property (nonatomic, strong) NSDate *lastInDate;
