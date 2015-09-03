@@ -17,6 +17,7 @@
 #define kIn @"in"				// NSString from NSDate
 #define kOut @"out"				// NSString from NSDate
 #define kDuration @"duration"	// integer
+#define kDurationThreshold 10
 
 @interface WorkTimeManager : NSObject
 
@@ -49,6 +50,7 @@
 - (NSArray *)getTimeList:(NSDate *)today;
 - (NSString *)getStartTime:(NSDate *)today;
 - (NSString *)getEndTime:(NSDate *)today;
+- (NSNumber *)getTotalOutSideDuration:(NSDate *)today;
 
 // UI related
 - (void)setSwitch:(UISwitch *)mySwitch andLabel:(UILabel *)label;

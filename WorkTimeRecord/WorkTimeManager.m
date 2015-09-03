@@ -288,35 +288,30 @@
     else {
         return currentDayArray[0][kList];
     }
-    
-//    // search within the history and return today's time stamp history
-//    NSCalendar *calendar = [NSCalendar currentCalendar];
-//    NSDateComponents *startComponents = [calendar components:(NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitYear|NSCalendarUnitHour|NSCalendarUnitMinute|NSCalendarUnitSecond) fromDate:today];
-//    [startComponents setHour: 00];
-//    [startComponents setMinute: 00];
-//    [startComponents setSecond: 00];
-//    
-//    NSDateComponents *endComponents = [calendar components:(NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitYear|NSCalendarUnitHour|NSCalendarUnitMinute|NSCalendarUnitSecond) fromDate:today];
-//    [endComponents setHour: 23];
-//    [endComponents setMinute: 59];
-//    [endComponents setSecond: 59];
-//    
-//    NSDate *startDate = [calendar dateFromComponents:startComponents];
-//    NSDate *endDate = [calendar dateFromComponents:endComponents];
-//	NSLog(@"Today: %@", today);
-//    NSLog(@"기준: %@ ~ %@", startDate, endDate);
-//    
-//    //NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(in >= %@) AND (in =< %@)", startDate, endDate];
-//    NSPredicate *predicate = [NSPredicate predicateWithBlock:
-//                              ^BOOL(id evaluatedObject, NSDictionary *bindings)
-//    {
-//		NSDate *inDate = [_dateTimeFormatter dateFromString:[evaluatedObject valueForKey:kIn]];
-//		NSDate *outDate = [_dateTimeFormatter dateFromString:[evaluatedObject valueForKey:kOut]];
-//        NSLog(@"내부: %@ ~ %@", inDate, outDate);
-//        return ( (inDate >= startDate) &&  (outDate <= endDate) );
-//    }];
-//    
-//    return [_history filteredArrayUsingPredicate:predicate];
+}
+
+
+- (NSNumber *)getTotalOutSideDuration:(NSDate *)today {
+    NSArray *currentDayArray = [self getTodaysInformation:today];
+    if ([currentDayArray count] == 0) {
+        return nil;
+    }
+    else {
+        // grap appropriate dictionary item
+        // getTodaysInformation method only returns size 1 array of NSDictionary if found
+        NSDictionary *correspondingItem = [currentDayArray firstObject];
+        NSArray *list = correspondingItem[kList];
+        __block NSNumber *durationSum = @0;
+
+        [list enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            NSNumber *duration = [obj valueForKey:kDuration];
+            if ([duration intValue] > kDurationThreshold) {
+                durationSum = @( [durationSum intValue] + [duration intValue]);
+            }
+        }];
+        
+        return durationSum;
+    }
 }
 
 - (void)setSwitch:(UISwitch *)mySwitch andLabel:(UILabel *)label {

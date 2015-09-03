@@ -15,6 +15,7 @@
 
 @property (nonatomic, strong) NSString *startTime;
 @property (nonatomic, strong) NSString *endTime;
+@property (nonatomic, strong) NSString *totalDuration;
 @property (nonatomic, strong) NSArray *todaysList;
 @property (nonatomic, strong) NSDateFormatter *dateFormatter;
 @property (nonatomic, strong) NSDateFormatter *timeFormatter;
@@ -102,6 +103,13 @@
     if (_endTime == nil) {
         _endTime = @"";
     }
+    NSNumber *duration = [manager getTotalOutSideDuration:currentDate];
+    if(duration == nil) {
+        _totalDuration = @"";
+    }
+    else {
+        _totalDuration = [NSString stringWithFormat:@"%@s", [duration stringValue]];
+    }
     
     _todaysList = [manager getTimeList:currentDate];
     if (_todaysList == nil) {
@@ -115,12 +123,13 @@
 }
 
 #pragma mark - table view protocols
-// there are 3 sections
+// there are 4 sections
 // 0: start time
-// 1: list of times that the user went out
-// 2: end time
+// 1: total duration of time that user have been gone out
+// 2: list of times that the user went out
+// 3: end time
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 3;
+    return 4;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -130,9 +139,12 @@
             rows = 1;
             break;
         case 1:
-            rows = [_todaysList count];
+            rows = 1;
             break;
         case 2:
+            rows = [_todaysList count];
+            break;
+        case 3:
             rows = 1;
             break;
         default:
@@ -159,6 +171,14 @@
             }
             break;
         case 1:
+            if ([_totalDuration isEqualToString:@""]) {
+                cell.textLabel.text = @"Not yet specified!!";
+            }
+            else {
+                cell.textLabel.text = _totalDuration;
+            }
+            break;
+        case 2:
         {
             // customize cell
             NSDictionary *data = _todaysList[indexPath.row];
@@ -170,7 +190,7 @@
                 [cell.textLabel setText:displayString];
                 
                 // change color
-                if ([data[kDuration] intValue] > 10) {
+                if ([data[kDuration] intValue] > kDurationThreshold) {
                     cell.textLabel.backgroundColor = [UIColor redColor];
                     cell.textLabel.textColor = [UIColor whiteColor];
                 }
@@ -181,7 +201,7 @@
             }
             break;
         }
-        case 2:
+        case 3:
             if ([_endTime isEqualToString:@""]) {
                 cell.textLabel.text = @"Not yet specified!!";
             }
@@ -205,9 +225,12 @@
             sectionName = @"Start time";
             break;
         case 1:
-            sectionName = @"Today's list";
+            sectionName = @"Outside";
             break;
         case 2:
+            sectionName = @"Today's list";
+            break;
+        case 3:
             sectionName = @"End time";
             break;
         default:
