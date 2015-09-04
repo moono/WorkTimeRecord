@@ -23,48 +23,6 @@
 
 #pragma mark - properties
 
-// contains all history of the time
-// [
-//      {
-//      "date" : NSDate ==> NSString with dateTimeFormatter
-//      "start" : NSDate ==> NSString with dateTimeFormatter
-//      "end" : NSDate ==> NSString with dateTimeFormatter
-//      "list" : [
-//                  {
-//                  "duration" : (int)
-//                  "in"  : NSDate ==> NSString with dateTimeFormatter
-//                  "out" : NSDate ==> NSString with dateTimeFormatter
-//                  },
-//                  {
-//                  "duration" : (int)
-//                  "in"  : NSDate ==> NSString with dateTimeFormatter
-//                  "out" : NSDate ==> NSString with dateTimeFormatter
-//                  },
-//                  ...
-//              ]
-//      },
-//      {
-//      "date" : NSDate ==> NSString with dateTimeFormatter
-//      "start" : NSDate ==> NSString with dateTimeFormatter
-//      "end" : NSDate ==> NSString with dateTimeFormatter
-//      "list" : [
-//                  {
-//                  "duration" : (int)
-//                  "in"  : NSDate ==> NSString with dateTimeFormatter
-//                  "out" : NSDate ==> NSString with dateTimeFormatter
-//                  },
-//                  {
-//                  "duration" : (int)
-//                  "in"  : NSDate ==> NSString with dateTimeFormatter
-//                  "out" : NSDate ==> NSString with dateTimeFormatter
-//                  },
-//                  ...
-//              ]
-//      },
-//      ...
-// ]
-@property (nonatomic, strong) NSMutableArray *history;
-
 // flag to indicate whether the user is inside the building or not
 @property (nonatomic) BOOL isInsideBuilding;
 
@@ -85,15 +43,15 @@
 
 // backup
 - (void)saveAsFile;
-
-// dummy method
-- (void)createInstance;
+- (void)loadData;
 
 // accessor
 - (NSArray *)getTimeList:(NSDate *)today;
 - (NSString *)getStartTime:(NSDate *)today;
 - (NSString *)getEndTime:(NSDate *)today;
 - (NSNumber *)getTotalOutSideDuration:(NSDate *)today;
+- (NSInteger)getNumberOfHistoryCount;
+- (NSDictionary *)getHistoryItemByIndex:(NSInteger)index;
 
 // UI related
 - (void)setSwitch:(UISwitch *)mySwitch andLabel:(UILabel *)label;

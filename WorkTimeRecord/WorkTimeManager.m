@@ -10,6 +10,48 @@
 
 @interface WorkTimeManager ()
 
+// contains all history of the time
+// [
+//      {
+//      "date" : NSDate ==> NSString with dateTimeFormatter
+//      "start" : NSDate ==> NSString with dateTimeFormatter
+//      "end" : NSDate ==> NSString with dateTimeFormatter
+//      "list" : [
+//                  {
+//                  "duration" : (int)
+//                  "in"  : NSDate ==> NSString with dateTimeFormatter
+//                  "out" : NSDate ==> NSString with dateTimeFormatter
+//                  },
+//                  {
+//                  "duration" : (int)
+//                  "in"  : NSDate ==> NSString with dateTimeFormatter
+//                  "out" : NSDate ==> NSString with dateTimeFormatter
+//                  },
+//                  ...
+//              ]
+//      },
+//      {
+//      "date" : NSDate ==> NSString with dateTimeFormatter
+//      "start" : NSDate ==> NSString with dateTimeFormatter
+//      "end" : NSDate ==> NSString with dateTimeFormatter
+//      "list" : [
+//                  {
+//                  "duration" : (int)
+//                  "in"  : NSDate ==> NSString with dateTimeFormatter
+//                  "out" : NSDate ==> NSString with dateTimeFormatter
+//                  },
+//                  {
+//                  "duration" : (int)
+//                  "in"  : NSDate ==> NSString with dateTimeFormatter
+//                  "out" : NSDate ==> NSString with dateTimeFormatter
+//                  },
+//                  ...
+//              ]
+//      },
+//      ...
+// ]
+@property (nonatomic, strong) NSMutableArray *history;
+
 // file name to backup the data
 @property (nonatomic, strong) NSString *historyFileName;
 
@@ -56,15 +98,11 @@
     // set last In date
     _lastInDate = nil;
     
-    // load data from file if exists
-	// or create new NSMutableArray instance
-    [self loadData];
+//    // load data from file if exists
+//	// or create new NSMutableArray instance
+//    [self loadData];
     
     return self;
-}
-
-- (void)createInstance {
-    // do nothing
 }
 
 #pragma mark - time management inputs
@@ -178,7 +216,7 @@
 }
 
 
-#pragma mark - my methods
+#pragma mark - my methods (Accessors)
 - (NSArray *)getTodaysInformation:(NSDate *)today {
     // //////////////////////////////////////////////// //
     // all the dates inside this method is GMT based!!! //
@@ -270,6 +308,16 @@
     }
 }
 
+- (NSInteger)getNumberOfHistoryCount {
+    return [_history count];
+}
+
+- (NSDictionary *)getHistoryItemByIndex:(NSInteger)index {
+    return _history[index];
+}
+
+
+#pragma mark - my methods (peripherals)
 - (void)setSwitch:(UISwitch *)mySwitch andLabel:(UILabel *)label {
 	if (_isInsideBuilding) {
 		[mySwitch setOn:YES animated:YES];

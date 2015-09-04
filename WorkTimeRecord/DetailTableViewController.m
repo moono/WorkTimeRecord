@@ -52,8 +52,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     WorkTimeManager *manager = [WorkTimeManager defaultInstance];
-    NSArray *history = [manager history];
-    return [history count];
+    return [manager getNumberOfHistoryCount];
 }
 
 
@@ -62,8 +61,7 @@
     
     // Configure the cell...
     WorkTimeManager *manager = [WorkTimeManager defaultInstance];
-    NSArray *history = [manager history];
-    NSDictionary *item = history[indexPath.row];
+    NSDictionary *item = [manager getHistoryItemByIndex:indexPath.row];
     NSDate *currentDate = [[manager dateTimeFormatter] dateFromString:[item valueForKey:kDate]];
     cell.textLabel.text = [[manager dateFormatter] stringFromDate:currentDate];
     

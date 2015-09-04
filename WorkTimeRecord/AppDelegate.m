@@ -69,10 +69,9 @@
     // register notification
     [[UIApplication sharedApplication] registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert categories:nil]];
     
-    
-    // create WorkTimeManager
+    // create or load WorkTimeManager
     WorkTimeManager *workManager = [WorkTimeManager defaultInstance];
-    [workManager createInstance];
+    [workManager loadData];
     
     return YES;
 }

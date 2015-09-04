@@ -39,11 +39,18 @@
     _timeFormatter = [[NSDateFormatter alloc] init];
     [_timeFormatter setDateFormat:@"HH:mm:ss"];
     
-    // update UI
-    [self refreshUI];
+    //// update UI
+    //[self refreshUI];
     
 	// show current time
     [self checkTime:self];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    // update UI
+    [self refreshUI];
 }
 
 - (void)didReceiveMemoryWarning {
