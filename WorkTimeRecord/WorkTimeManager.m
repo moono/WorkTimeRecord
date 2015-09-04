@@ -284,8 +284,15 @@
     }
 }
 
+- (NSInteger)getNumberOfHistoryCount {
+    return [_history count];
+}
 
-- (NSNumber *)getTotalOutSideDuration:(NSDate *)today {
+- (NSDictionary *)getHistoryItemByIndex:(NSInteger)index {
+    return _history[index];
+}
+
+- (NSNumber *)getOutsideDurationWholeDay:(NSDate *)today {
     NSArray *currentDayArray = [self getTodaysInformation:today];
     if ([currentDayArray count] == 0) {
         return nil;
@@ -295,27 +302,75 @@
         // getTodaysInformation method only returns size 1 array of NSDictionary if found
         NSDictionary *correspondingItem = [currentDayArray firstObject];
         NSArray *list = correspondingItem[kList];
-        __block NSNumber *durationSum = @0;
-
-        [list enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-            NSNumber *duration = [obj valueForKey:kDuration];
-            if ([duration intValue] > kDurationThreshold) {
-                durationSum = @( [durationSum intValue] + [duration intValue]);
-            }
-        }];
         
-        return durationSum;
+        return [self getTotalOutsideDurationWithinList:list];
     }
 }
 
-- (NSInteger)getNumberOfHistoryCount {
-    return [_history count];
+- (NSNumber *)getWorkDurationWholeDay:(NSDate *)today {
+    NSArray *currentDayArray = [self getTodaysInformation:today];
+    if ([currentDayArray count] == 0) {
+        return nil;
+    }
+    else {
+        // grap appropriate dictionary item
+        // getTodaysInformation method only returns size 1 array of NSDictionary if found
+        NSDictionary *correspondingItem = [currentDayArray firstObject];
+        NSArray *list = correspondingItem[kList];
+        NSNumber *outsideDuration = [self getTotalOutsideDurationWithinList:list];
+        
+        NSDate *startDate = [_dateTimeFormatter dateFromString:correspondingItem[kStart]];
+        NSDate *endDate = [_dateTimeFormatter dateFromString:correspondingItem[kEnd]];
+        NSTimeInterval secondsBetween = [endDate timeIntervalSinceDate:startDate];
+        int inMinutes = secondsBetween / 60;
+        
+        int totalSum = inMinutes - [outsideDuration intValue];
+        return [NSNumber numberWithInt:totalSum];
+    }
 }
 
-- (NSDictionary *)getHistoryItemByIndex:(NSInteger)index {
-    return _history[index];
+- (NSNumber *)getThisWeeksOutsideDuration:(NSDate *)today {
+    // get week indicator from input
+    NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+    NSDateComponents *todaysComponents = [gregorian components:NSCalendarUnitWeekOfYear fromDate:today];
+    NSUInteger todaysWeek = [todaysComponents weekOfYear];
+    
+    // iterate through history and get corresponding week property
+    __block int sum = 0;
+    [_history enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        NSDate *anotherDate = [_dateTimeFormatter dateFromString:obj[kDate]];
+        NSDateComponents *otherComponents = [gregorian components:NSCalendarUnitWeekOfYear fromDate:anotherDate];
+        NSUInteger anotherWeek = [otherComponents weekOfYear];
+        
+        if(todaysWeek == anotherWeek) {
+            NSArray *list = obj[kList];
+            sum += [[self getTotalOutsideDurationWithinList:list] intValue];
+        }
+    }];
+    
+    return [NSNumber numberWithInt:sum];
 }
 
+- (NSNumber *)getThisWeeksWorkDuration:(NSDate *)today {
+    // get week indicator from input
+    NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+    NSDateComponents *todaysComponents = [gregorian components:NSCalendarUnitWeekOfYear fromDate:today];
+    NSUInteger todaysWeek = [todaysComponents weekOfYear];
+    
+    // iterate through history and get corresponding week property
+    __block int sum = 0;
+    [_history enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        NSDate *anotherDate = [_dateTimeFormatter dateFromString:obj[kDate]];
+        NSDateComponents *otherComponents = [gregorian components:NSCalendarUnitWeekOfYear fromDate:anotherDate];
+        NSUInteger anotherWeek = [otherComponents weekOfYear];
+        
+        if(todaysWeek == anotherWeek) {
+            sum += [[self getWorkDurationWholeDay:today] intValue];
+        }
+    }];
+    
+    return [NSNumber numberWithInt:sum];
+}
 
 #pragma mark - my methods (peripherals)
 - (void)setSwitch:(UISwitch *)mySwitch andLabel:(UILabel *)label {
@@ -329,6 +384,21 @@
 	}
 	
 	NSLog(@"current inside flag: %@", @(_isInsideBuilding));
+}
+
+- (NSNumber *)getTotalOutsideDurationWithinList:(NSArray *)todayList {
+    __block int sum = 0;
+    
+    [todayList enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        NSNumber *duration = [obj valueForKey:kDuration];
+        if ([duration intValue] > kDurationThreshold) {
+            sum += [duration intValue];
+        }
+    }];
+    
+    // convert seconds to minutes
+    int inMinutes = sum / 60;
+    return [NSNumber numberWithInt:inMinutes];
 }
 
 @end

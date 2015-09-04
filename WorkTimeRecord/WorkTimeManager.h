@@ -17,7 +17,7 @@
 #define kIn @"in"				// NSString from NSDate
 #define kOut @"out"				// NSString from NSDate
 #define kDuration @"duration"	// integer
-#define kDurationThreshold 10
+#define kDurationThreshold 5  // 10 miniutes in seconds
 
 @interface WorkTimeManager : NSObject
 
@@ -49,9 +49,14 @@
 - (NSArray *)getTimeList:(NSDate *)today;
 - (NSString *)getStartTime:(NSDate *)today;
 - (NSString *)getEndTime:(NSDate *)today;
-- (NSNumber *)getTotalOutSideDuration:(NSDate *)today;
 - (NSInteger)getNumberOfHistoryCount;
 - (NSDictionary *)getHistoryItemByIndex:(NSInteger)index;
+
+// below will return time in minutes
+- (NSNumber *)getOutsideDurationWholeDay:(NSDate *)today;
+- (NSNumber *)getThisWeeksOutsideDuration:(NSDate *)today;
+- (NSNumber *)getWorkDurationWholeDay:(NSDate *)today;
+- (NSNumber *)getThisWeeksWorkDuration:(NSDate *)today;
 
 // UI related
 - (void)setSwitch:(UISwitch *)mySwitch andLabel:(UILabel *)label;

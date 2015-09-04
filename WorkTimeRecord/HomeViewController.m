@@ -15,7 +15,8 @@
 
 @property (nonatomic, strong) NSString *startTime;
 @property (nonatomic, strong) NSString *endTime;
-@property (nonatomic, strong) NSString *totalDuration;
+@property (nonatomic, strong) NSString *totalWorkDuration;
+@property (nonatomic, strong) NSString *totalOutsideDuration;
 @property (nonatomic, strong) NSArray *todaysList;
 @property (nonatomic, strong) NSDateFormatter *dateFormatter;
 @property (nonatomic, strong) NSDateFormatter *timeFormatter;
@@ -38,9 +39,6 @@
     [_dateFormatter setDateFormat:@"yyyy-MM-dd"];
     _timeFormatter = [[NSDateFormatter alloc] init];
     [_timeFormatter setDateFormat:@"HH:mm:ss"];
-    
-    //// update UI
-    //[self refreshUI];
     
 	// show current time
     [self checkTime:self];
@@ -106,16 +104,26 @@
     if (_startTime == nil) {
         _startTime = @"";
     }
+    
     _endTime = [manager getEndTime:currentDate];
     if (_endTime == nil) {
         _endTime = @"";
     }
-    NSNumber *duration = [manager getTotalOutSideDuration:currentDate];
-    if(duration == nil) {
-        _totalDuration = @"";
+    
+    NSNumber *workDuration = [manager getWorkDurationWholeDay:currentDate];
+    if (workDuration == nil) {
+        _totalWorkDuration = @"";
     }
     else {
-        _totalDuration = [NSString stringWithFormat:@"%@s", [duration stringValue]];
+        _totalWorkDuration = [NSString stringWithFormat:@"%@ m", [workDuration stringValue]];
+    }
+    
+    NSNumber *outsideDuration = [manager getOutsideDurationWholeDay:currentDate];
+    if(outsideDuration == nil) {
+        _totalOutsideDuration = @"";
+    }
+    else {
+        _totalOutsideDuration = [NSString stringWithFormat:@"%@ m", [outsideDuration stringValue]];
     }
     
     _todaysList = [manager getTimeList:currentDate];
@@ -130,13 +138,40 @@
 }
 
 #pragma mark - table view protocols
-// there are 4 sections
+// there are 5 sections
 // 0: start time
-// 1: total duration of time that user have been gone out
-// 2: list of times that the user went out
-// 3: end time
+// 1: total work duration
+// 2: total duration of time that user have been gone out
+// 3: list of times that the user went out
+// 4: end time
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    NSString *sectionName;
+    switch (section)
+    {
+        case 0:
+            sectionName = @"Start time";
+            break;
+        case 1:
+            sectionName = @"Work duration";
+            break;
+        case 2:
+            sectionName = @"Outside";
+            break;
+        case 3:
+            sectionName = @"Today's list";
+            break;
+        case 4:
+            sectionName = @"End time";
+            break;
+        default:
+            sectionName = @"";
+            break;
+    }
+    return sectionName;
+}
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 4;
+    return 5;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -149,9 +184,12 @@
             rows = 1;
             break;
         case 2:
-            rows = [_todaysList count];
+            rows = 1;
             break;
         case 3:
+            rows = [_todaysList count];
+            break;
+        case 4:
             rows = 1;
             break;
         default:
@@ -178,14 +216,22 @@
             }
             break;
         case 1:
-            if ([_totalDuration isEqualToString:@""]) {
+            if ([_totalWorkDuration isEqualToString:@""]) {
                 cell.textLabel.text = @"Not yet specified!!";
             }
             else {
-                cell.textLabel.text = _totalDuration;
+                cell.textLabel.text = _totalWorkDuration;
             }
             break;
         case 2:
+            if ([_totalOutsideDuration isEqualToString:@""]) {
+                cell.textLabel.text = @"Not yet specified!!";
+            }
+            else {
+                cell.textLabel.text = _totalOutsideDuration;
+            }
+            break;
+        case 3:
         {
             // customize cell
             NSDictionary *data = _todaysList[indexPath.row];
@@ -208,7 +254,7 @@
             }
             break;
         }
-        case 3:
+        case 4:
             if ([_endTime isEqualToString:@""]) {
                 cell.textLabel.text = @"Not yet specified!!";
             }
@@ -223,30 +269,6 @@
 	
 	return cell;
 }
-
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    NSString *sectionName;
-    switch (section)
-    {
-        case 0:
-            sectionName = @"Start time";
-            break;
-        case 1:
-            sectionName = @"Outside";
-            break;
-        case 2:
-            sectionName = @"Today's list";
-            break;
-        case 3:
-            sectionName = @"End time";
-            break;
-        default:
-            sectionName = @"";
-            break;
-    }
-    return sectionName;
-}
-
 
 #pragma mark - action events
 - (IBAction)switchValueChanged:(id)sender {
