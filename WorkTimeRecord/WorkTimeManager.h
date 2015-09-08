@@ -17,6 +17,10 @@
 #define kIn @"in"				// NSString from NSDate
 #define kOut @"out"				// NSString from NSDate
 #define kDuration @"duration"	// integer
+
+#define kInside @"inside"
+#define kLast @"last"
+
 #define kDurationThreshold 5  // 10 miniutes in seconds
 
 @interface WorkTimeManager : NSObject
@@ -38,12 +42,12 @@
 
 #pragma mark - instance methods
 
+// modifier
 // add time stamp
 - (BOOL)addTimeStamp:(NSDate *)time;
 
-// backup
-- (void)saveAsFile;
-- (void)loadData;
+// remove item
+- (BOOL)removeWholeDay:(NSDate *)date;
 
 // accessor
 - (NSArray *)getTimeList:(NSDate *)today;
@@ -57,6 +61,10 @@
 - (NSNumber *)getThisWeeksOutsideDuration:(NSDate *)today;
 - (NSNumber *)getWorkDurationWholeDay:(NSDate *)today;
 - (NSNumber *)getThisWeeksWorkDuration:(NSDate *)today;
+
+// backup
+- (void)saveAsFile;
+- (void)loadData;
 
 // UI related
 - (void)setSwitch:(UISwitch *)mySwitch andLabel:(UILabel *)label;

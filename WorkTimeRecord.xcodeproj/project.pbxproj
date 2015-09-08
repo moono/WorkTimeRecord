@@ -16,6 +16,7 @@
 		2A33B8B61B8443FB00F2BD25 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A33B8B51B8443FB00F2BD25 /* HomeViewController.m */; };
 		2A33B8BC1B8453CD00F2BD25 /* WorkTimeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A33B8BB1B8453CD00F2BD25 /* WorkTimeManager.m */; };
 		2A59F8321B96848900146F6B /* DetailTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A59F8311B96848900146F6B /* DetailTableViewController.m */; };
+		2A6707C81B9EBF3D0027331E /* DetailTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A6707C71B9EBF3D0027331E /* DetailTableViewCell.m */; };
 		2AFA08B41B85A8D0003F8116 /* EstimoteSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2AFA08B31B85A8D0003F8116 /* EstimoteSDK.framework */; };
 /* End PBXBuildFile section */
 
@@ -47,6 +48,8 @@
 		2A33B8BB1B8453CD00F2BD25 /* WorkTimeManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WorkTimeManager.m; sourceTree = "<group>"; };
 		2A59F8301B96848900146F6B /* DetailTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailTableViewController.h; sourceTree = "<group>"; };
 		2A59F8311B96848900146F6B /* DetailTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailTableViewController.m; sourceTree = "<group>"; };
+		2A6707C61B9EBF3D0027331E /* DetailTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailTableViewCell.h; sourceTree = "<group>"; };
+		2A6707C71B9EBF3D0027331E /* DetailTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailTableViewCell.m; sourceTree = "<group>"; };
 		2AFA08B31B85A8D0003F8116 /* EstimoteSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = EstimoteSDK.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -103,6 +106,8 @@
 				2A33B8BB1B8453CD00F2BD25 /* WorkTimeManager.m */,
 				2A59F8301B96848900146F6B /* DetailTableViewController.h */,
 				2A59F8311B96848900146F6B /* DetailTableViewController.m */,
+				2A6707C61B9EBF3D0027331E /* DetailTableViewCell.h */,
+				2A6707C71B9EBF3D0027331E /* DetailTableViewCell.m */,
 			);
 			path = WorkTimeRecord;
 			sourceTree = "<group>";
@@ -234,6 +239,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2A6707C81B9EBF3D0027331E /* DetailTableViewCell.m in Sources */,
 				2A59F8321B96848900146F6B /* DetailTableViewController.m in Sources */,
 				2A33B8941B84438B00F2BD25 /* AppDelegate.m in Sources */,
 				2A33B8911B84438B00F2BD25 /* main.m in Sources */,

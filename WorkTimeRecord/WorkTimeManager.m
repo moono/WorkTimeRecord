@@ -10,6 +10,13 @@
 
 @interface WorkTimeManager ()
 
+//// temporary state saving data structure
+//// {
+////  "inside" : BOOL ==> NSNumber
+////  "last": NSDate ==> NSString with dateTimeFormatter
+//// }
+//@property (nonatomic, strong) NSMutableDictionary *state;
+
 // contains all history of the time
 // [
 //      {
@@ -54,6 +61,7 @@
 
 // file name to backup the data
 @property (nonatomic, strong) NSString *historyFileName;
+@property (nonatomic, strong) NSString *stateFileName;
 
 // stores date(time) of previously entered the monitoring region
 @property (nonatomic, strong) NSDate *lastInDate;
@@ -77,8 +85,8 @@
 - (instancetype)init {
     self = [super init];
 	
-	// set initial state
-	_isInsideBuilding = NO;
+	//// set initial state
+	//_isInsideBuilding = NO;
 	
     // set date formatters
     _dateTimeFormatter = [NSDateFormatter new];
@@ -94,9 +102,10 @@
     
     // set file name
     _historyFileName = [currentDirectory stringByAppendingPathComponent:@"time_history.json"];
+    _stateFileName = [currentDirectory stringByAppendingPathComponent:@"state.json"];
     
-    // set last In date
-    _lastInDate = nil;
+    //// set last In date
+    //_lastInDate = nil;
     
 //    // load data from file if exists
 //	// or create new NSMutableArray instance
@@ -177,8 +186,37 @@
     return TRUE;
 }
 
+- (BOOL)removeWholeDay:(NSDate *)date {
+    // prepare to find appropriate item
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+    NSDateComponents *startComponents = [calendar components:(NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitYear|NSCalendarUnitHour|NSCalendarUnitMinute|NSCalendarUnitSecond) fromDate:date];
+    [startComponents setHour: 00];
+    [startComponents setMinute: 00];
+    [startComponents setSecond: 00];
+    
+    NSDate *newDate = [calendar dateFromComponents:startComponents];
+    
+    NSInteger index = [_history indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
+        NSDate *referenceDate = [_dateTimeFormatter dateFromString:obj[kDate]];
+        if (referenceDate == newDate) {
+            *stop = YES;
+            return YES;
+        }
+        return NO;
+    }];
+    
+    if (index == NSNotFound) {
+        return NO;
+    }
+    else {
+        [_history removeObjectAtIndex:index];
+        return YES;
+    }
+}
+
 #pragma mark - file operations
 - (void)saveAsFile {
+    // save history file
     // Dictionary convertable to JSON ?
     if ([NSJSONSerialization isValidJSONObject:_history])
     {
@@ -193,12 +231,35 @@
             [json writeToFile:_historyFileName atomically:YES];
         }
     }
+    
+    // save state file
+    NSString *lastInDateInString = @"";
+    if (_lastInDate != nil) {
+        lastInDateInString = [_dateTimeFormatter stringFromDate:_lastInDate];
+    }
+    NSDictionary *state = @{ kInside : [NSNumber numberWithBool:_isInsideBuilding],
+                             kLast : lastInDateInString };
+    if ([NSJSONSerialization isValidJSONObject:state])
+    {
+        // Serialize the dictionary
+        NSError *error;
+        NSData *json = [NSJSONSerialization dataWithJSONObject:state options:NSJSONWritingPrettyPrinted error:&error];
+        
+        // If no errors, let's view the JSON
+        if (json != nil && error == nil)
+        {
+            // save
+            [json writeToFile:_stateFileName atomically:YES];
+        }
+    }
 }
 
 - (void)loadData {
+    // for history file
     // check if the file already exists
     NSFileManager *fileManager = [NSFileManager defaultManager];
     BOOL fileExists = [fileManager fileExistsAtPath:_historyFileName];
+    // load from data
     if (fileExists) {
         NSData *data = [fileManager contentsAtPath:_historyFileName];
         NSError *error;
@@ -206,12 +267,35 @@
         _history = [array mutableCopy];
         
         if (_history == nil || error) {
-            
+            NSLog(@"Error loading %@", _history);
         }
     }
+    // initial setup
     else {
         // initialize NSMutableDictionary
         _history = [[NSMutableArray alloc] init];
+    }
+    
+    // for temprary state file
+    fileExists = [fileManager fileExistsAtPath:_stateFileName];
+    // load from data
+    if (fileExists) {
+        NSData *data = [fileManager contentsAtPath:_stateFileName];
+        NSError *error;
+        NSDictionary *item = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+        
+        if (item == nil || error) {
+            NSLog(@"Error loading %@", _stateFileName);
+        }
+        else {
+            _isInsideBuilding = item[kInside] ? YES : NO;
+            _lastInDate = [item[kLast] isEqualToString:@""] ? nil : [_dateTimeFormatter dateFromString:item[kLast]];
+        }
+    }
+    // initial setup
+    else {
+        _isInsideBuilding = NO;
+        _lastInDate = nil;
     }
 }
 

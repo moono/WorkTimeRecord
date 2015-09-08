@@ -15,8 +15,10 @@
 
 @property (nonatomic, strong) NSString *startTime;
 @property (nonatomic, strong) NSString *endTime;
-@property (nonatomic, strong) NSString *totalWorkDuration;
-@property (nonatomic, strong) NSString *totalOutsideDuration;
+@property (nonatomic, strong) NSString *totalWorkDurationDay;
+//@property (nonatomic, strong) NSString *totalWorkDurationWeek;
+@property (nonatomic, strong) NSString *totalOffDurationDay;
+//@property (nonatomic, strong) NSString *totalOffDurationWeek;
 @property (nonatomic, strong) NSArray *todaysList;
 @property (nonatomic, strong) NSDateFormatter *dateFormatter;
 @property (nonatomic, strong) NSDateFormatter *timeFormatter;
@@ -100,36 +102,61 @@
     
     // get todays array
     WorkTimeManager *manager = [WorkTimeManager defaultInstance];
+    
+    // get starting time
     _startTime = [manager getStartTime:currentDate];
     if (_startTime == nil) {
         _startTime = @"";
     }
     
+    // get end time
     _endTime = [manager getEndTime:currentDate];
     if (_endTime == nil) {
         _endTime = @"";
     }
     
-    NSNumber *workDuration = [manager getWorkDurationWholeDay:currentDate];
-    if (workDuration == nil) {
-        _totalWorkDuration = @"";
+    // get total in office duration: day
+    NSNumber *workDurationDay = [manager getWorkDurationWholeDay:currentDate];
+    if (workDurationDay == nil) {
+        _totalWorkDurationDay = @"";
     }
     else {
-        _totalWorkDuration = [NSString stringWithFormat:@"%@ m", [workDuration stringValue]];
+        _totalWorkDurationDay = [NSString stringWithFormat:@"%@ m", [workDurationDay stringValue]];
     }
     
-    NSNumber *outsideDuration = [manager getOutsideDurationWholeDay:currentDate];
-    if(outsideDuration == nil) {
-        _totalOutsideDuration = @"";
+    // get total off office duration: day
+    NSNumber *outsideDurationDay = [manager getOutsideDurationWholeDay:currentDate];
+    if(outsideDurationDay == nil) {
+        _totalOffDurationDay = @"";
     }
     else {
-        _totalOutsideDuration = [NSString stringWithFormat:@"%@ m", [outsideDuration stringValue]];
+        _totalOffDurationDay = [NSString stringWithFormat:@"%@ m", [outsideDurationDay stringValue]];
     }
     
+    // get list of all off office list
     _todaysList = [manager getTimeList:currentDate];
     if (_todaysList == nil) {
         _todaysList = [[NSArray alloc] init];
     }
+    
+//    // get total in office duration: week
+//    NSNumber *workDurationWeek = [manager getThisWeeksWorkDuration:currentDate];
+//    if (workDurationWeek == nil) {
+//        _totalWorkDurationWeek = @"";
+//    }
+//    else {
+//        _totalWorkDurationWeek = [NSString stringWithFormat:@"%@ m", [workDurationWeek stringValue]];
+//    }
+//    
+//    // get total off office duration: week
+//    NSNumber *outsideDurationWeek = [manager getThisWeeksOutsideDuration:currentDate];
+//    if(outsideDurationWeek == nil) {
+//        _totalOffDurationWeek = @"";
+//    }
+//    else {
+//        _totalOffDurationWeek = [NSString stringWithFormat:@"%@ m", [outsideDurationWeek stringValue]];
+//    }
+    
     // set switch control
     [manager setSwitch:_insideSwitch andLabel:_insideTextLabel];
     
@@ -149,19 +176,19 @@
     switch (section)
     {
         case 0:
-            sectionName = @"Start time";
+            sectionName = @"You came to office at...";
             break;
         case 1:
-            sectionName = @"Work duration";
+            sectionName = @"You've been working for...";
             break;
         case 2:
-            sectionName = @"Outside";
+            sectionName = @"You were off around...";
             break;
         case 3:
-            sectionName = @"Today's list";
+            sectionName = @"Off office list";
             break;
         case 4:
-            sectionName = @"End time";
+            sectionName = @"You've previously left the office at...";
             break;
         default:
             sectionName = @"";
@@ -206,6 +233,11 @@
 	if(cell == nil) {
 		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
 	}
+    
+    // set cell color first
+    cell.textLabel.backgroundColor = [UIColor whiteColor];
+    cell.textLabel.textColor = [UIColor blackColor];
+    
     switch (indexPath.section) {
         case 0:
             if ([_startTime isEqualToString:@""]) {
@@ -216,19 +248,19 @@
             }
             break;
         case 1:
-            if ([_totalWorkDuration isEqualToString:@""]) {
+            if ([_totalWorkDurationDay isEqualToString:@""]) {
                 cell.textLabel.text = @"Not yet specified!!";
             }
             else {
-                cell.textLabel.text = _totalWorkDuration;
+                cell.textLabel.text = _totalWorkDurationDay;
             }
             break;
         case 2:
-            if ([_totalOutsideDuration isEqualToString:@""]) {
+            if ([_totalOffDurationDay isEqualToString:@""]) {
                 cell.textLabel.text = @"Not yet specified!!";
             }
             else {
-                cell.textLabel.text = _totalOutsideDuration;
+                cell.textLabel.text = _totalOffDurationDay;
             }
             break;
         case 3:
@@ -242,14 +274,10 @@
                 NSString *displayString = [NSString stringWithFormat:@"[%@s]: %@ ~ %@", [data[kDuration] stringValue], [_timeFormatter stringFromDate:inDate], [_timeFormatter stringFromDate:outDate]];
                 [cell.textLabel setText:displayString];
                 
-                // change color
+                // change color if needed
                 if ([data[kDuration] intValue] > kDurationThreshold) {
                     cell.textLabel.backgroundColor = [UIColor redColor];
                     cell.textLabel.textColor = [UIColor whiteColor];
-                }
-                else {
-                    cell.textLabel.backgroundColor = [UIColor whiteColor];
-                    cell.textLabel.textColor = [UIColor blackColor];
                 }
             }
             break;
@@ -275,12 +303,12 @@
 	WorkTimeManager *manager = [WorkTimeManager defaultInstance];
 	if ([sender isOn]) {
 		[manager setIsInsideBuilding:YES];
-		[manager setSwitch:_insideSwitch andLabel:_insideTextLabel];
 	}
 	else {
 		[manager setIsInsideBuilding:NO];
-		[manager setSwitch:_insideSwitch andLabel:_insideTextLabel];
 	}
+    
+    [manager setSwitch:_insideSwitch andLabel:_insideTextLabel];
 }
 
 - (IBAction)testing:(id)sender {
